@@ -1,0 +1,242 @@
+---
+import Button from './Button.astro';
+import { site } from '../data/site';
+
+const navigation = [
+	{ label: 'Services', href: '/services/' },
+	{ label: 'Service Areas', href: '/service-areas/' },
+	{ label: 'About', href: '/about/' },
+	{ label: 'Contact', href: '/contact/' },
+] as const;
+
+const currentPath = Astro.url.pathname;
+const isCurrent = (href: string) =>
+	href === '/' ? currentPath === href : currentPath.startsWith(href);
+---
+
+<header class="site-header">
+	<div class="container header-inner">
+		<a class="brand" href="/" aria-label={`${site.name} home`}>
+			<span class="brand-icon" aria-hidden="true">🐞</span>
+			<span>{site.name}</span>
+		</a>
+
+		<nav class="desktop-nav" aria-label="Primary navigation">
+			<ul>
+				{
+					navigation.map((item) => (
+						<li>
+							<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="header-actions">
+			<a class="phone" href={site.phone.href} aria-label={`Call Spraytech at ${site.phone.display}`}>
+				{site.phone.display}
+			</a>
+			<Button href="/contact/#quote">Get a Quote</Button>
+		</div>
+
+		<details class="mobile-nav">
+			<summary aria-label="Open navigation menu">
+				<span aria-hidden="true"></span>
+				<span class="menu-label">Menu</span>
+			</summary>
+			<nav aria-label="Mobile navigation">
+				<ul>
+					{
+						navigation.map((item) => (
+							<li>
+								<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+									{item.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+				<div class="mobile-actions">
+					<a class="phone" href={site.phone.href}>{site.phone.display}</a>
+					<Button href="/contact/#quote">Get a Quote</Button>
+				</div>
+			</nav>
+		</details>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: relative;
+		z-index: 20;
+		border-bottom: var(--border);
+		background: var(--color-surface);
+	}
+
+	.header-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		gap: var(--space-4);
+		min-height: 4.75rem;
+		padding-block: var(--space-3);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-3);
+		max-width: 17rem;
+		color: var(--color-primary);
+		font-weight: 800;
+		font-size: 0.95rem;
+		line-height: 1.15;
+		text-decoration: none;
+	}
+
+	.brand-icon {
+		display: grid;
+		width: 2.5rem;
+		height: 2.5rem;
+		flex: 0 0 auto;
+		place-items: center;
+		border-radius: 50%;
+		background: var(--color-background);
+		font-size: 1.25rem;
+	}
+
+	.desktop-nav,
+	.header-actions {
+		display: none;
+	}
+
+	.mobile-nav {
+		position: static;
+	}
+
+	.mobile-nav summary {
+		display: flex;
+		min-height: 2.75rem;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-2) var(--space-3);
+		border: var(--border);
+		border-radius: var(--radius-sm);
+		color: var(--color-primary);
+		font-weight: 700;
+		cursor: pointer;
+		list-style: none;
+	}
+
+	.mobile-nav summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.mobile-nav summary > span:first-child,
+	.mobile-nav summary > span:first-child::before,
+	.mobile-nav summary > span:first-child::after {
+		display: block;
+		width: 1.2rem;
+		height: 2px;
+		background: currentColor;
+		content: '';
+	}
+
+	.mobile-nav summary > span:first-child {
+		position: relative;
+	}
+
+	.mobile-nav summary > span:first-child::before {
+		position: absolute;
+		top: -0.35rem;
+	}
+
+	.mobile-nav summary > span:first-child::after {
+		position: absolute;
+		top: 0.35rem;
+	}
+
+	.mobile-nav nav {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		padding: var(--space-4) var(--content-gutter) var(--space-5);
+		border-top: var(--border);
+		border-bottom: var(--border);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-md);
+	}
+
+	.mobile-nav ul,
+	.desktop-nav ul {
+		margin: 0;
+		list-style: none;
+	}
+
+	.mobile-nav li + li {
+		border-top: var(--border);
+	}
+
+	.mobile-nav nav a:not(.button) {
+		display: block;
+		padding-block: var(--space-3);
+		color: var(--color-primary);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.mobile-actions {
+		display: grid;
+		gap: var(--space-3);
+		padding-top: var(--space-4);
+	}
+
+	.phone {
+		color: var(--color-primary);
+		font-weight: 700;
+	}
+
+	@media (min-width: 60rem) {
+		.header-inner {
+			grid-template-columns: minmax(12rem, 1fr) auto minmax(17rem, 1fr);
+		}
+
+		.desktop-nav,
+		.header-actions {
+			display: block;
+		}
+
+		.desktop-nav ul {
+			display: flex;
+			align-items: center;
+			gap: clamp(var(--space-3), 2vw, var(--space-5));
+		}
+
+		.desktop-nav a {
+			color: var(--color-text);
+			font-size: 0.925rem;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.desktop-nav a:hover,
+		.desktop-nav a[aria-current='page'] {
+			color: var(--color-accent);
+		}
+
+		.header-actions {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: var(--space-4);
+		}
+
+		.mobile-nav {
+			display: none;
+		}
+	}
+</style>

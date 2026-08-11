@@ -1,0 +1,82 @@
+---
+interface Props {
+	variant?: 'primary' | 'secondary';
+	href?: string;
+	type?: 'button' | 'submit' | 'reset';
+	ariaLabel?: string;
+	class?: string;
+}
+
+const {
+	variant = 'primary',
+	href,
+	type = 'button',
+	ariaLabel,
+	class: className = '',
+} = Astro.props;
+
+const classes = ['button', `button--${variant}`, className].filter(Boolean).join(' ');
+---
+
+{
+	href ? (
+		<a class={classes} href={href} aria-label={ariaLabel}>
+			<slot />
+		</a>
+	) : (
+		<button class={classes} type={type} aria-label={ariaLabel}>
+			<slot />
+		</button>
+	)
+}
+
+<style>
+	.button {
+		display: inline-flex;
+		min-height: 2.75rem;
+		align-items: center;
+		justify-content: center;
+		padding: 0.65rem var(--space-5);
+		border: 2px solid transparent;
+		border-radius: var(--radius-sm);
+		font-weight: 700;
+		line-height: 1.2;
+		text-align: center;
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			background-color 160ms ease,
+			border-color 160ms ease,
+			color 160ms ease,
+			transform 160ms ease;
+	}
+
+	.button:hover {
+		text-decoration: none;
+		transform: translateY(-1px);
+	}
+
+	.button:active {
+		transform: translateY(0);
+	}
+
+	.button--primary {
+		background: var(--color-accent);
+		color: var(--color-surface);
+	}
+
+	.button--primary:hover {
+		background: var(--color-accent-dark);
+	}
+
+	.button--secondary {
+		border-color: var(--color-primary);
+		background: transparent;
+		color: var(--color-primary);
+	}
+
+	.button--secondary:hover {
+		background: var(--color-primary);
+		color: var(--color-surface);
+	}
+</style>

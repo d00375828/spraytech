@@ -1,0 +1,87 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	href: string;
+	icon?: string;
+}
+
+const { title, description, href, icon = '🐞' } = Astro.props;
+---
+
+<article class="service-card">
+	<div class="service-icon" aria-hidden="true">{icon}</div>
+	<h3><a href={href}>{title}</a></h3>
+	<p>{description}</p>
+	<span class="card-link" aria-hidden="true">Learn more <span>→</span></span>
+</article>
+
+<style>
+	.service-card {
+		position: relative;
+		display: flex;
+		min-height: 100%;
+		flex-direction: column;
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+		transition:
+			border-color 160ms ease,
+			box-shadow 160ms ease,
+			transform 160ms ease;
+	}
+
+	.service-card:hover {
+		border-color: var(--color-accent);
+		box-shadow: var(--shadow-md);
+		transform: translateY(-2px);
+	}
+
+	.service-icon {
+		display: grid;
+		width: 3rem;
+		height: 3rem;
+		margin-bottom: var(--space-5);
+		place-items: center;
+		border-radius: var(--radius-sm);
+		background: var(--color-background);
+		font-size: 1.5rem;
+	}
+
+	h3 {
+		font-size: 1.25rem;
+	}
+
+	h3 a {
+		color: var(--color-primary);
+		text-decoration: none;
+	}
+
+	h3 a::after {
+		position: absolute;
+		inset: 0;
+		border-radius: var(--radius-md);
+		content: '';
+	}
+
+	h3 a:focus-visible {
+		outline: none;
+	}
+
+	.service-card:has(h3 a:focus-visible) {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
+	}
+
+	p {
+		color: var(--color-text-muted);
+	}
+
+	.card-link {
+		margin-top: auto;
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+</style>

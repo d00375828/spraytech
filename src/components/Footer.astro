@@ -1,0 +1,147 @@
+---
+import { serviceAreas } from '../data/serviceAreas';
+import { services } from '../data/services';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container footer-grid">
+		<div class="footer-brand">
+			<a class="brand" href="/" aria-label={`${site.name} home`}>
+				<span class="brand-icon" aria-hidden="true">🐞</span>
+				<span>{site.name}</span>
+			</a>
+			<p>Local pest and weed control for {site.primaryLocation.region}.</p>
+			{site.licensedAndInsured && <p class="credential">Licensed &amp; insured</p>}
+		</div>
+
+		<nav aria-labelledby="footer-services-heading">
+			<h2 id="footer-services-heading">Services</h2>
+			<ul>
+				{
+					services.map((service) => (
+						<li><a href={`/services/${service.slug}/`}>{service.name}</a></li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<nav aria-labelledby="footer-areas-heading">
+			<h2 id="footer-areas-heading">Service Areas</h2>
+			<ul>
+				{
+					serviceAreas.map((area) => (
+						<li><a href={`/service-areas/${area.slug}/`}>{area.name}, {area.state}</a></li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="footer-contact">
+			<h2>Contact</h2>
+			<address>
+				<a href={site.phone.href}>{site.phone.display}</a>
+				<span>{site.hours.display}</span>
+				<span>Email coming soon</span>
+			</address>
+		</div>
+	</div>
+
+	<div class="container footer-bottom">
+		<p>&copy; {year} {site.name}. All rights reserved.</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		padding-top: var(--space-8);
+		background: var(--color-text);
+		color: rgb(255 255 255 / 0.78);
+	}
+
+	.footer-grid {
+		display: grid;
+		gap: var(--space-7);
+		padding-bottom: var(--space-7);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-3);
+		max-width: 18rem;
+		margin-bottom: var(--space-4);
+		color: var(--color-surface);
+		font-weight: 800;
+		line-height: 1.2;
+		text-decoration: none;
+	}
+
+	.brand-icon {
+		display: grid;
+		width: 2.5rem;
+		height: 2.5rem;
+		flex: 0 0 auto;
+		place-items: center;
+		border-radius: 50%;
+		background: rgb(255 255 255 / 0.08);
+	}
+
+	.footer-brand p {
+		max-width: 20rem;
+	}
+
+	.credential {
+		color: var(--color-surface);
+		font-weight: 700;
+	}
+
+	h2 {
+		margin-bottom: var(--space-4);
+		color: var(--color-surface);
+		font-size: 1rem;
+	}
+
+	ul {
+		margin: 0;
+		list-style: none;
+	}
+
+	li + li {
+		margin-top: var(--space-2);
+	}
+
+	a {
+		color: inherit;
+	}
+
+	address {
+		display: grid;
+		gap: var(--space-2);
+		font-style: normal;
+	}
+
+	.footer-bottom {
+		padding-block: var(--space-4);
+		border-top: 1px solid rgb(255 255 255 / 0.14);
+		font-size: 0.875rem;
+	}
+
+	.footer-bottom p {
+		margin: 0;
+	}
+
+	@media (min-width: 40rem) {
+		.footer-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.footer-grid {
+			grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+		}
+	}
+</style>
