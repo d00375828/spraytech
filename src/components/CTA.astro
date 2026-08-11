@@ -8,6 +8,7 @@ interface Props {
 	quoteLabel?: string;
 	phoneLabel?: string;
 	showHours?: boolean;
+	headingId?: string;
 }
 
 const {
@@ -16,13 +17,14 @@ const {
 	quoteLabel = 'Get a Quote',
 	phoneLabel = `Call or Text ${site.phone.display}`,
 	showHours = false,
+	headingId = 'cta-heading',
 } = Astro.props;
 ---
 
-<section class="cta" aria-labelledby="cta-heading">
+<section class="cta" aria-labelledby={headingId}>
 	<div class="container cta-inner">
 		<div>
-			<h2 id="cta-heading">{headline}</h2>
+			<h2 id={headingId}>{headline}</h2>
 			<p>{copy}</p>
 		</div>
 		<div class="cta-actions">

@@ -4,6 +4,7 @@ import Button from '../components/Button.astro';
 import CTA from '../components/CTA.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import ServiceIcon from '../components/ServiceIcon.astro';
 import { serviceAreas } from '../data/serviceAreas';
 import { services } from '../data/services';
 import { site } from '../data/site';
@@ -12,31 +13,24 @@ const title = 'Pest & Weed Control in St. George, UT | Spraytech';
 const description =
 	'Local pest and weed control in St. George, Utah for scorpions, spiders, ants, roaches, wasps, rodents and unwanted weeds. One-time and recurring service from Spraytech Pest and Weed Control.';
 
-const serviceIcons: Record<string, string> = {
-	'scorpion-control': '🦂',
-	'spider-control': '🕷️',
-	'ant-control': '🐜',
-	'roach-control': '◈',
-	'wasp-control': '⬡',
-	'rodent-control': '◒',
-	'weed-control': '⌁',
-};
+const pestServices = services.filter((service) => service.slug !== 'weed-control');
+const weedControl = services.find((service) => service.slug === 'weed-control');
 
 const benefits = [
 	{
 		number: '01',
-		title: 'Southern Utah Local',
-		copy: 'Spraytech Pest and Weed Control is locally owned by someone who has spent his life in Southern Utah. We know the pests, weeds, and desert conditions that come with living here because we live here too.',
+		title: 'Local Knowledge',
+		copy: 'Spraytech Pest and Weed Control is locally owned by someone who has spent his life in Southern Utah. We understand the pests, weeds, and desert conditions homeowners here deal with because we live here too.',
 	},
 	{
 		number: '02',
-		title: 'Small Company. Quick Response.',
-		copy: "You shouldn't have to work through a giant call center just to get help with a pest or weed problem. With Spraytech, communication stays simple and local.",
+		title: 'Fast, Personal Service',
+		copy: "When you need help, you shouldn't have to work through a giant call center. Spraytech keeps communication simple, local, and responsive.",
 	},
 	{
 		number: '03',
-		title: 'Straightforward Service',
-		copy: "Pest and weed control shouldn't mean nonstop calls and pressure to schedule treatments you don't need. We'll recommend the service that makes sense for your situation.",
+		title: 'Straightforward Recommendations',
+		copy: "We'll recommend the treatment that makes sense for your property without constantly pressuring you into services you don't need.",
 	},
 ] as const;
 
@@ -101,11 +95,10 @@ const faqs = [
 			<div class="container hero-grid">
 				<div class="hero-content">
 					<p class="eyebrow">Local Pest &amp; Weed Control <span aria-hidden="true">•</span> St. George, Utah</p>
-					<h1 id="hero-heading">Pest and Weed Control From Someone Who Knows Southern Utah.</h1>
+					<h1 id="hero-heading">Local Pest &amp; Weed Control for Southern Utah.</h1>
 					<p class="hero-copy">
-						Spraytech Pest and Weed Control helps St. George homeowners take care of scorpions,
-						spiders, ants, roaches, wasps, rodents, weeds, and other unwanted problems with
-						straightforward local service.
+						Spraytech Pest and Weed Control provides straightforward local service for scorpions,
+						spiders, ants, roaches, wasps, rodents, weeds, and other common Southern Utah problems.
 					</p>
 					<div class="hero-actions">
 						<Button href="/contact/#quote">Get a Free Quote</Button>
@@ -114,7 +107,7 @@ const faqs = [
 							variant="secondary"
 							ariaLabel={`Call Spraytech at ${site.phone.display}`}
 						>
-							Call {site.phone.display}
+							Call or Text {site.phone.display}
 						</Button>
 					</div>
 					<p class="trust-line">Licensed &amp; Insured <span aria-hidden="true">•</span> One-Time &amp; Recurring Service</p>
@@ -151,18 +144,34 @@ const faqs = [
 					id="services-heading"
 				/>
 
-				<div class="services-grid">
-					{
-						services.map((service) => (
-							<ServiceCard
-								title={service.name}
-								description={service.description}
-								href={`/${service.slug}/`}
-								icon={serviceIcons[service.slug]}
-							/>
-						))
-					}
+				<div class="service-category" aria-labelledby="pest-control-category">
+					<p class="category-label" id="pest-control-category">Pest Control</p>
+					<div class="services-grid">
+						{
+							pestServices.map((service) => (
+								<ServiceCard
+									title={service.name}
+									description={service.description}
+									href={`/${service.slug}/`}
+									icon={service.slug}
+								/>
+							))
+						}
+					</div>
 				</div>
+
+				{
+					weedControl && (
+						<a class="weed-feature" href="/weed-control/">
+							<div class="weed-icon" aria-hidden="true"><ServiceIcon name={weedControl.slug} /></div>
+							<div class="weed-content">
+								<h3>{weedControl.name}</h3>
+								<p>{weedControl.description}</p>
+							</div>
+							<span class="weed-link">Learn more <span aria-hidden="true">→</span></span>
+						</a>
+					)
+				}
 			</div>
 		</section>
 
@@ -187,10 +196,18 @@ const faqs = [
 				</div>
 
 				<blockquote>
-					<p>“Your pest and weed problems should be annoying. Your service company shouldn't be.”</p>
+					<p>“Pests and weeds are annoying enough. Your service company shouldn't be.”</p>
 				</blockquote>
 			</div>
 		</section>
+
+		<CTA
+			headline="Have a Pest or Weed Problem Right Now?"
+			copy="Call or text Spraytech and tell us what you're dealing with."
+			quoteLabel="Get a Free Quote"
+			phoneLabel={`Call or Text ${site.phone.display}`}
+			headingId="midpage-cta-heading"
+		/>
 
 		<section class="section process-section" aria-labelledby="process-heading">
 			<div class="container">
@@ -289,19 +306,20 @@ const faqs = [
 			quoteLabel="Get a Free Quote"
 			phoneLabel={`Call or Text ${site.phone.display}`}
 			showHours
+			headingId="final-cta-heading"
 		/>
 	</main>
 </BaseLayout>
 
 <style>
 	:global(.section) {
-		padding-block: clamp(var(--space-8), 10vw, var(--space-9));
+		padding-block: var(--section-padding-block);
 	}
 
 	.hero {
 		position: relative;
 		overflow: hidden;
-		padding-block: clamp(var(--space-7), 8vw, var(--space-9));
+		padding-block: clamp(var(--space-6), 6vw, var(--space-8));
 	}
 
 	.hero-grid,
@@ -450,6 +468,74 @@ const faqs = [
 	.services-grid {
 		display: grid;
 		gap: var(--space-4);
+	}
+
+	.category-label {
+		margin-bottom: var(--space-4);
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.weed-feature {
+		display: grid;
+		gap: var(--space-4);
+		align-items: center;
+		margin-top: var(--space-6);
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			border-color 160ms ease,
+			box-shadow 160ms ease,
+			transform 160ms ease;
+	}
+
+	.weed-feature:hover {
+		border-color: var(--color-accent);
+		box-shadow: var(--shadow-md);
+		text-decoration: none;
+		transform: translateY(-2px);
+	}
+
+	.weed-feature:focus-visible {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
+	}
+
+	.weed-icon {
+		display: grid;
+		width: 3rem;
+		height: 3rem;
+		place-items: center;
+		border-radius: var(--radius-sm);
+		background: var(--color-background);
+		font-size: 1.5rem;
+	}
+
+	.weed-feature h3 {
+		margin-bottom: var(--space-4);
+		font-size: 1.25rem;
+	}
+
+	.weed-feature .weed-content > p:last-child {
+		max-width: 44rem;
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	.weed-link {
+		color: var(--color-accent);
+		font-weight: 800;
+		white-space: nowrap;
+		text-underline-offset: 0.25em;
 	}
 
 	.benefits-grid {
@@ -670,10 +756,19 @@ const faqs = [
 			text-align: center;
 		}
 
-		.services-grid,
 		.benefits-grid,
 		.steps-grid {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.services-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.weed-feature {
+			grid-template-columns: auto minmax(0, 1fr) auto;
+			gap: var(--space-5);
+			padding: var(--space-5);
 		}
 
 		.areas-grid {
@@ -702,9 +797,4 @@ const faqs = [
 		}
 	}
 
-	@media (min-width: 75rem) {
-		.services-grid {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-		}
-	}
 </style>
