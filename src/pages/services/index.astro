@@ -1,0 +1,416 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import CTA from '../../components/CTA.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import ServiceIcon from '../../components/ServiceIcon.astro';
+import { services } from '../../data/services';
+import { site } from '../../data/site';
+
+const title = 'Pest & Weed Control Services in St. George, UT | Spraytech';
+const description =
+	'Explore local pest and weed control services from Spraytech in St. George, Utah, including scorpion, spider, ant, roach, wasp, rodent, and weed control.';
+
+const pestServices = services.filter((service) => service.slug !== 'weed-control');
+const weedControl = services.find((service) => service.slug === 'weed-control');
+
+const serviceOptions = [
+	{
+		title: 'One-Time Service',
+		copy: 'A focused treatment for a specific pest or weed problem when you need help now.',
+	},
+	{
+		title: 'Recurring Service',
+		copy: 'Ongoing protection designed around your property, local conditions, and the problems you want to keep under control.',
+	},
+] as const;
+
+const reasons = [
+	{
+		title: 'Southern Utah Knowledge',
+		copy: 'Local experience with the pests, weeds, and desert conditions homeowners here deal with.',
+	},
+	{
+		title: 'Fast, Personal Communication',
+		copy: 'Simple, local, responsive help without working through a giant call center.',
+	},
+	{
+		title: 'Licensed and Insured',
+		copy: 'Professional service from a licensed and insured local company.',
+	},
+] as const;
+---
+
+<BaseLayout {title} {description}>
+	<main id="main-content">
+		<section class="services-hero" aria-labelledby="services-hero-heading">
+			<div class="container services-hero-grid">
+				<div class="services-hero-copy">
+					<p class="eyebrow">Pest &amp; Weed Control Services</p>
+					<h1 id="services-hero-heading">Pest and Weed Control for Southern Utah Homes.</h1>
+					<p class="lead">
+						Spraytech Pest and Weed Control provides local treatment for common Southern Utah pests
+						and unwanted weeds. Whether you need help with a one-time problem or ongoing protection,
+						we'll recommend the service that makes sense for your property.
+					</p>
+					<div class="hero-actions">
+						<Button href="/contact/#quote">Get a Free Quote</Button>
+						<Button
+							href={site.phone.href}
+							variant="secondary"
+							ariaLabel={`Call or text Spraytech at ${site.phone.display}`}
+						>
+							Call or Text {site.phone.display}
+						</Button>
+					</div>
+				</div>
+
+				<div class="hero-service-panel" aria-label="Pest and weed control services">
+					<div class="panel-icon"><ServiceIcon name="scorpion-control" /></div>
+					<div class="panel-icon"><ServiceIcon name="rodent-control" /></div>
+					<div class="panel-icon"><ServiceIcon name="weed-control" /></div>
+					<p>Local treatment for the problems Southern Utah properties face.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="page-section pest-section" aria-labelledby="pest-heading">
+			<div class="container">
+				<SectionHeading
+					eyebrow="Pest Control"
+					heading="Help for the Pests Southern Utah Homeowners Deal With Most."
+					supportingText="From scorpions hiding around the property to ants, spiders, roaches, wasps, and rodents, Spraytech provides practical pest-control service built around local conditions."
+					id="pest-heading"
+				/>
+
+				<div class="services-grid">
+					{
+						pestServices.map((service) => (
+							<ServiceCard
+								title={service.name}
+								description={service.description}
+								href={`/${service.slug}/`}
+								icon={service.slug}
+							/>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="page-section weed-section" aria-labelledby="weed-heading">
+			<div class="container">
+				<SectionHeading
+					eyebrow="Weed Control"
+					heading="Keep Unwanted Growth Under Control."
+					supportingText="Southern Utah's climate can create persistent weed problems around homes, yards, rock landscaping, driveways, and other areas of a property. Spraytech provides targeted weed-control service based on what your property actually needs."
+					id="weed-heading"
+				/>
+
+				{
+					weedControl && (
+						<a class="weed-card" href="/weed-control/">
+							<div class="weed-icon" aria-hidden="true">
+								<ServiceIcon name={weedControl.slug} />
+							</div>
+							<div>
+								<h3>{weedControl.name}</h3>
+								<p>{weedControl.description}</p>
+							</div>
+							<span class="weed-link">Learn more <span aria-hidden="true">→</span></span>
+						</a>
+					)
+				}
+			</div>
+		</section>
+
+		<section class="page-section options-section" aria-labelledby="options-heading">
+			<div class="container">
+				<SectionHeading
+					heading="One-Time Help or Ongoing Service."
+					supportingText="Not every property needs the same treatment schedule. Spraytech offers both one-time and recurring pest and weed control, and we'll recommend the option that makes sense for your situation without pressuring you into service you don't need."
+					id="options-heading"
+				/>
+
+				<div class="options-grid">
+					{
+						serviceOptions.map((option, index) => (
+							<article class="option-card">
+								<span aria-hidden="true">0{index + 1}</span>
+								<h3>{option.title}</h3>
+								<p>{option.copy}</p>
+							</article>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="page-section why-section" aria-labelledby="why-heading">
+			<div class="container">
+				<SectionHeading heading="Straightforward Local Service." id="why-heading" />
+				<div class="reasons-grid">
+					{
+						reasons.map((reason) => (
+							<article>
+								<span aria-hidden="true">✓</span>
+								<div>
+									<h3>{reason.title}</h3>
+									<p>{reason.copy}</p>
+								</div>
+							</article>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<CTA
+			headline="Need Help With a Pest or Weed Problem?"
+			copy="Tell Spraytech what you're dealing with and we'll help you figure out the right next step."
+			quoteLabel="Get a Free Quote"
+			phoneLabel={`Call or Text ${site.phone.display}`}
+			headingId="services-cta-heading"
+		/>
+	</main>
+</BaseLayout>
+
+<style>
+	.services-hero {
+		padding-block: clamp(var(--space-7), 7vw, var(--space-9));
+	}
+
+	.services-hero-grid {
+		display: grid;
+		gap: var(--space-7);
+		align-items: center;
+	}
+
+	.eyebrow {
+		margin-bottom: var(--space-3);
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 13ch;
+		font-size: clamp(2.5rem, 8vw, 4.5rem);
+	}
+
+	.lead {
+		max-width: 44rem;
+		color: var(--color-text-muted);
+		font-size: clamp(1.075rem, 2.2vw, 1.25rem);
+	}
+
+	.hero-actions {
+		display: flex;
+		align-items: stretch;
+		flex-direction: column;
+		gap: var(--space-3);
+		margin-top: var(--space-6);
+	}
+
+	.hero-service-panel {
+		display: grid;
+		grid-template-columns: repeat(3, auto);
+		gap: var(--space-4);
+		align-items: center;
+		justify-content: center;
+		min-height: 18rem;
+		padding: var(--space-6);
+		border: var(--border);
+		border-radius: var(--radius-lg);
+		background: var(--color-primary);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.panel-icon,
+	.weed-icon {
+		display: grid;
+		width: 3rem;
+		height: 3rem;
+		place-items: center;
+		border-radius: var(--radius-sm);
+		background: var(--color-background);
+	}
+
+	.panel-icon:nth-child(2) {
+		transform: translateY(-1rem);
+	}
+
+	.hero-service-panel p {
+		grid-column: 1 / -1;
+		max-width: 24rem;
+		margin: var(--space-3) auto 0;
+		color: var(--color-surface);
+		font-size: 1.15rem;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	.page-section {
+		padding-block: var(--section-padding-block);
+	}
+
+	.pest-section,
+	.options-section {
+		background: var(--color-surface);
+	}
+
+	.services-grid {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.weed-card {
+		display: grid;
+		gap: var(--space-4);
+		align-items: center;
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		transition:
+			border-color 160ms ease,
+			box-shadow 160ms ease,
+			transform 160ms ease;
+	}
+
+	.weed-card:hover {
+		border-color: var(--color-accent);
+		box-shadow: var(--shadow-md);
+		text-decoration: none;
+		transform: translateY(-2px);
+	}
+
+	.weed-card:focus-visible {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
+	}
+
+	.weed-card h3 {
+		margin-bottom: var(--space-2);
+		font-size: 1.25rem;
+	}
+
+	.weed-card p {
+		max-width: 44rem;
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	.weed-link {
+		color: var(--color-accent);
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.options-grid,
+	.reasons-grid {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.option-card {
+		padding: var(--space-6);
+		border: var(--border);
+		border-top: 3px solid var(--color-accent);
+		background: var(--color-background);
+	}
+
+	.option-card > span {
+		display: block;
+		margin-bottom: var(--space-5);
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+	}
+
+	.option-card h3,
+	.reasons-grid h3 {
+		font-size: 1.25rem;
+	}
+
+	.option-card p,
+	.reasons-grid p {
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	.why-section {
+		background: var(--color-primary);
+	}
+
+	.why-section :global(.section-heading) {
+		margin-bottom: var(--space-6);
+	}
+
+	.why-section :global(.section-heading h2) {
+		color: var(--color-surface);
+	}
+
+	.reasons-grid article {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--space-3);
+		padding-top: var(--space-4);
+		border-top: 1px solid rgb(255 255 255 / 0.2);
+	}
+
+	.reasons-grid article > span {
+		color: var(--color-accent);
+		font-weight: 800;
+	}
+
+	.reasons-grid h3 {
+		color: var(--color-surface);
+	}
+
+	.reasons-grid p {
+		color: rgb(255 255 255 / 0.72);
+	}
+
+	@media (min-width: 34rem) {
+		.hero-actions {
+			align-items: flex-start;
+			flex-direction: row;
+		}
+
+		.services-grid,
+		.options-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 48rem) {
+		.services-grid,
+		.reasons-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.weed-card {
+			grid-template-columns: auto minmax(0, 1fr) auto;
+			gap: var(--space-5);
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.services-hero-grid {
+			grid-template-columns: minmax(0, 1.15fr) minmax(22rem, 0.65fr);
+			gap: clamp(var(--space-7), 7vw, var(--space-9));
+		}
+
+		.hero-service-panel {
+			min-height: 24rem;
+		}
+	}
+</style>
