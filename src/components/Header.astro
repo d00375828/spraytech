@@ -1,10 +1,10 @@
 ---
 import Button from './Button.astro';
+import { serviceAreas } from '../data/serviceAreas';
+import { services } from '../data/services';
 import { site } from '../data/site';
 
 const navigation = [
-	{ label: 'Services', href: '/services/' },
-	{ label: 'Service Areas', href: '/service-areas/' },
 	{ label: 'About', href: '/about/' },
 	{ label: 'Contact', href: '/contact/' },
 ] as const;
@@ -12,6 +12,8 @@ const navigation = [
 const currentPath = Astro.url.pathname;
 const isCurrent = (href: string) =>
 	href === '/' ? currentPath === href : currentPath.startsWith(href);
+const servicesActive = currentPath === '/services/' || services.some((service) => currentPath === `/${service.slug}/`);
+const areasActive = currentPath.startsWith('/service-areas/');
 ---
 
 <header class="site-header">
@@ -23,6 +25,56 @@ const isCurrent = (href: string) =>
 
 		<nav class="desktop-nav" aria-label="Primary navigation">
 			<ul>
+				<li class:list={['dropdown', { 'group-current': servicesActive }]}>
+					<a href="/services/" aria-current={currentPath === '/services/' ? 'page' : undefined}>
+						Services
+					</a>
+					<div class="dropdown-menu">
+						<ul aria-label="Services submenu">
+							<li><a href="/services/">All Services</a></li>
+							{
+								services.map((service) => (
+									<li>
+										{service.isBuilt ? (
+											<a href={`/${service.slug}/`} aria-current={currentPath === `/${service.slug}/` ? 'page' : undefined}>
+												{service.name}
+											</a>
+										) : (
+											<span class="disabled-item" aria-disabled="true">
+												{service.name}
+											</span>
+										)}
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</li>
+
+				<li class:list={['dropdown', { 'group-current': areasActive }]}>
+					<a href="/service-areas/" aria-current={currentPath === '/service-areas/' ? 'page' : undefined}>
+						Service Areas
+					</a>
+					<div class="dropdown-menu">
+						<ul aria-label="Service areas submenu">
+							<li><a href="/service-areas/">All Service Areas</a></li>
+							{
+								serviceAreas.map((area) => (
+									<li>
+										{area.isBuilt ? (
+											<a href={`/service-areas/${area.slug}/`}>{area.name}</a>
+										) : (
+											<span class="disabled-item" aria-disabled="true">
+												{area.name}
+											</span>
+										)}
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</li>
+
 				{
 					navigation.map((item) => (
 						<li>
@@ -39,29 +91,69 @@ const isCurrent = (href: string) =>
 			<a class="phone" href={site.phone.href} aria-label={`Call Spraytech at ${site.phone.display}`}>
 				{site.phone.display}
 			</a>
-			<Button href="/contact/#quote">Get a Quote</Button>
+			<Button href="/contact/">Get a Quote</Button>
 		</div>
 
 		<details class="mobile-nav">
 			<summary aria-label="Open navigation menu">
-				<span aria-hidden="true"></span>
+				<span class="menu-icon" aria-hidden="true"></span>
 				<span class="menu-label">Menu</span>
 			</summary>
 			<nav aria-label="Mobile navigation">
-				<ul>
+				<ul class="mobile-list">
+					<li>
+						<details class="mobile-submenu">
+							<summary>
+								<span>Services</span>
+							</summary>
+							<ul>
+								<li><a href="/services/">All Services</a></li>
+								{
+									services.map((service) => (
+										<li>
+											{service.isBuilt ? (
+												<a href={`/${service.slug}/`}>{service.name}</a>
+											) : (
+												<span class="disabled-item" aria-disabled="true">{service.name}<small>Coming soon</small></span>
+											)}
+										</li>
+									))
+								}
+							</ul>
+						</details>
+					</li>
+
+					<li>
+						<details class="mobile-submenu">
+							<summary>
+								<span>Service Areas</span>
+							</summary>
+							<ul>
+								<li><a href="/service-areas/">All Service Areas</a></li>
+								{
+									serviceAreas.map((area) => (
+										<li>
+											{area.isBuilt ? (
+												<a href={`/service-areas/${area.slug}/`}>{area.name}</a>
+											) : (
+												<span class="disabled-item" aria-disabled="true">{area.name}<small>Coming soon</small></span>
+											)}
+										</li>
+									))
+								}
+							</ul>
+						</details>
+					</li>
+
 					{
 						navigation.map((item) => (
-							<li>
-								<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-									{item.label}
-								</a>
-							</li>
+							<li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
 						))
 					}
 				</ul>
 				<div class="mobile-actions">
 					<a class="phone" href={site.phone.href}>{site.phone.display}</a>
-					<Button href="/contact/#quote">Get a Quote</Button>
+					<Button href="/contact/">Get a Quote</Button>
 				</div>
 			</nav>
 		</details>
@@ -117,7 +209,7 @@ const isCurrent = (href: string) =>
 		position: static;
 	}
 
-	.mobile-nav summary {
+	.mobile-nav > summary {
 		display: flex;
 		min-height: 2.75rem;
 		align-items: center;
@@ -135,9 +227,9 @@ const isCurrent = (href: string) =>
 		display: none;
 	}
 
-	.mobile-nav summary > span:first-child,
-	.mobile-nav summary > span:first-child::before,
-	.mobile-nav summary > span:first-child::after {
+	.menu-icon,
+	.menu-icon::before,
+	.menu-icon::after {
 		display: block;
 		width: 1.2rem;
 		height: 2px;
@@ -145,48 +237,114 @@ const isCurrent = (href: string) =>
 		content: '';
 	}
 
-	.mobile-nav summary > span:first-child {
+	.menu-icon {
 		position: relative;
 	}
 
-	.mobile-nav summary > span:first-child::before {
+	.menu-icon::before {
 		position: absolute;
 		top: -0.35rem;
 	}
 
-	.mobile-nav summary > span:first-child::after {
+	.menu-icon::after {
 		position: absolute;
 		top: 0.35rem;
 	}
 
-	.mobile-nav nav {
+	.mobile-nav > nav {
 		position: absolute;
 		top: 100%;
 		left: 0;
 		width: 100%;
-		padding: var(--space-4) var(--content-gutter) var(--space-5);
+		max-height: calc(100vh - 4.75rem);
+		overflow-y: auto;
+		padding: var(--space-3) var(--content-gutter) var(--space-5);
 		border-top: var(--border);
 		border-bottom: var(--border);
 		background: var(--color-surface);
 		box-shadow: var(--shadow-md);
 	}
 
-	.mobile-nav ul,
+	.mobile-list,
+	.mobile-submenu ul,
 	.desktop-nav ul {
 		margin: 0;
 		list-style: none;
 	}
 
-	.mobile-nav li + li {
+	.mobile-list > li + li {
 		border-top: var(--border);
 	}
 
-	.mobile-nav nav a:not(.button) {
-		display: block;
+	.mobile-list > li > a,
+	.mobile-submenu > summary {
+		display: flex;
+		min-height: 2.75rem;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
 		padding-block: var(--space-3);
 		color: var(--color-primary);
 		font-weight: 700;
 		text-decoration: none;
+	}
+
+	.mobile-submenu > summary {
+		cursor: pointer;
+		list-style: none;
+	}
+
+	.chevron {
+		display: inline-block;
+		width: 0.45rem;
+		height: 0.45rem;
+		flex: 0 0 auto;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: translateY(-0.1rem) rotate(45deg);
+		transition: transform 160ms ease;
+	}
+
+	.mobile-submenu[open] > summary .chevron {
+		transform: translateY(0.1rem) rotate(225deg);
+	}
+
+	.mobile-submenu ul {
+		padding: 0 0 var(--space-3) var(--space-4);
+		border-left: 2px solid var(--color-border);
+	}
+
+	.mobile-submenu li + li {
+		margin-top: var(--space-1);
+	}
+
+	.mobile-submenu a,
+	.mobile-submenu .disabled-item {
+		display: flex;
+		min-height: 2.5rem;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
+		padding: var(--space-2) var(--space-3);
+		color: var(--color-primary);
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.disabled-item {
+		color: var(--color-text-muted);
+		cursor: default;
+	}
+
+	.disabled-item small {
+		color: var(--color-text-muted);
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		white-space: nowrap;
+		text-transform: uppercase;
+		opacity: 0.75;
 	}
 
 	.mobile-actions {
@@ -210,10 +368,14 @@ const isCurrent = (href: string) =>
 			display: block;
 		}
 
-		.desktop-nav ul {
+		.desktop-nav > ul {
 			display: flex;
 			align-items: center;
 			gap: clamp(var(--space-3), 2vw, var(--space-5));
+		}
+
+		.desktop-nav > ul > li {
+			position: relative;
 		}
 
 		.desktop-nav a {
@@ -223,9 +385,76 @@ const isCurrent = (href: string) =>
 			text-decoration: none;
 		}
 
+		.desktop-nav > ul > li > a {
+			display: inline-flex;
+			align-items: center;
+			gap: var(--space-2);
+			padding-block: var(--space-3);
+		}
+
 		.desktop-nav a:hover,
-		.desktop-nav a[aria-current='page'] {
+		.desktop-nav a[aria-current='page'],
+		.desktop-nav .group-current > a {
 			color: var(--color-accent);
+		}
+
+		.dropdown-menu {
+			position: absolute;
+			top: 100%;
+			left: calc(-1 * var(--space-4));
+			width: 16.5rem;
+			padding-top: var(--space-2);
+			opacity: 0;
+			pointer-events: none;
+			transform: translateY(-0.25rem);
+			transition:
+				opacity 140ms ease,
+				transform 140ms ease;
+		}
+
+		.dropdown:hover .dropdown-menu,
+		.dropdown:focus-within .dropdown-menu {
+			opacity: 1;
+			pointer-events: auto;
+			transform: translateY(0);
+		}
+
+		.dropdown:hover > a .chevron,
+		.dropdown:focus-within > a .chevron {
+			transform: translateY(0.1rem) rotate(225deg);
+		}
+
+		.dropdown-menu > ul {
+			display: grid;
+			gap: var(--space-1);
+			padding: var(--space-2);
+			border: var(--border);
+			border-radius: var(--radius-md);
+			background: var(--color-surface);
+			box-shadow: var(--shadow-md);
+		}
+
+		.dropdown-menu a,
+		.dropdown-menu .disabled-item {
+			display: flex;
+			min-height: 2.4rem;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-3);
+			padding: var(--space-2) var(--space-3);
+			border-radius: var(--radius-sm);
+			font-size: 0.85rem;
+		}
+
+		.dropdown-menu a:hover,
+		.dropdown-menu a:focus-visible {
+			background: var(--color-background);
+			color: var(--color-accent);
+		}
+
+		.dropdown-menu .disabled-item {
+			background: transparent;
+			color: var(--color-text-muted);
 		}
 
 		.header-actions {

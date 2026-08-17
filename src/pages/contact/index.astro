@@ -1,0 +1,411 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { serviceAreas } from '../../data/serviceAreas';
+import { services } from '../../data/services';
+import { site } from '../../data/site';
+
+const title = 'Contact Spraytech Pest and Weed Control | St. George, UT';
+const description =
+	'Contact Spraytech Pest and Weed Control in St. George, Utah. Call or text for pest control, weed control, and free quote information.';
+---
+
+<BaseLayout {title} {description}>
+	<main id="main-content">
+		<section class="contact-hero" aria-labelledby="contact-heading">
+			<div class="container hero-inner">
+				<p class="eyebrow">Contact Spraytech</p>
+				<h1 id="contact-heading">Tell Us What You're Dealing With.</h1>
+				<p class="lead">
+					Have a pest or weed problem? Get in touch with Spraytech and we'll help you figure out
+					the right next step.
+				</p>
+			</div>
+		</section>
+
+		<section class="contact-options" aria-labelledby="contact-options-heading">
+			<div class="container">
+				<h2 class="visually-hidden" id="contact-options-heading">Contact options</h2>
+				<div class="contact-grid">
+					<a class="contact-card" href={site.phone.href}>
+						<span class="contact-icon" aria-hidden="true">↗</span>
+						<span class="contact-label">Call</span>
+						<strong>{site.phone.display}</strong>
+						<span class="contact-action">Call Spraytech <span aria-hidden="true">→</span></span>
+					</a>
+
+					<a
+						class="contact-card"
+						href={site.phone.smsHref}
+						aria-label={`Text Spraytech at ${site.phone.display}`}
+					>
+						<span class="contact-icon" aria-hidden="true">⋯</span>
+						<span class="contact-label">Text</span>
+						<strong>{site.phone.display}</strong>
+						<span class="contact-action">Text Spraytech <span aria-hidden="true">→</span></span>
+					</a>
+
+					<div class="contact-card contact-card--hours">
+						<span class="contact-icon" aria-hidden="true">◷</span>
+						<span class="contact-label">Hours</span>
+						<strong>{site.hours.days}</strong>
+						<span class="contact-action">{site.hours.time}</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="form-section" id="quote" aria-labelledby="quote-heading">
+			<div class="container form-layout">
+				<div class="form-intro">
+					<SectionHeading
+						eyebrow="Tell Us About the Problem"
+						heading="Request a Free Quote"
+						supportingText="Share a few details about your property and the service you need."
+						id="quote-heading"
+					/>
+
+					<div class="service-area-note">
+						<h3>Local service area</h3>
+						<p>
+							Serving {serviceAreas.map((area) => area.name).join(', ')}.
+						</p>
+						<a href="/service-areas/">View service areas <span aria-hidden="true">→</span></a>
+					</div>
+				</div>
+
+				<div class="form-card">
+					<div class="prototype-note" id="form-availability" role="note">
+						<strong>No backend yet just proof on concept</strong>
+						<span>For now, call or text Spraytech for service.</span>
+					</div>
+
+					<form aria-describedby="form-availability">
+						<div class="field-grid">
+							<div class="field">
+								<label for="name">Name <span aria-hidden="true">*</span></label>
+								<input id="name" name="name" type="text" autocomplete="name" required />
+							</div>
+
+							<div class="field">
+								<label for="phone">Phone <span aria-hidden="true">*</span></label>
+								<input id="phone" name="phone" type="tel" autocomplete="tel" required />
+							</div>
+
+							<div class="field field--wide">
+								<label for="email">Email</label>
+								<input id="email" name="email" type="email" autocomplete="email" />
+							</div>
+
+							<div class="field">
+								<label for="service">Service Needed <span aria-hidden="true">*</span></label>
+								<select id="service" name="service" required>
+									<option value="">Select a service</option>
+									{services.map((service) => <option value={service.slug}>{service.name}</option>)}
+									<option value="other">Not Sure / Other</option>
+								</select>
+							</div>
+
+							<div class="field">
+								<label for="location">Location / City <span aria-hidden="true">*</span></label>
+								<select id="location" name="location" autocomplete="address-level2" required>
+									<option value="">Select your location</option>
+									{serviceAreas.map((area) => <option value={area.slug}>{area.name}</option>)}
+									<option value="other-nearby">Other / Nearby</option>
+								</select>
+							</div>
+
+							<div class="field field--wide">
+								<label for="message">Tell us what you're dealing with</label>
+								<textarea id="message" name="message" rows="5"></textarea>
+							</div>
+						</div>
+
+						<p class="required-note"><span aria-hidden="true">*</span> Required fields</p>
+						<Button href="/contact/" ariaDescribedby="form-availability">Request a Free Quote</Button>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<section class="trust-section" aria-label="Spraytech service information">
+			<div class="container trust-grid">
+				<p><span aria-hidden="true">◆</span> Licensed &amp; Insured</p>
+				<p><span aria-hidden="true">◆</span> One-Time &amp; Recurring Service</p>
+				<p><span aria-hidden="true">◆</span> Locally Owned</p>
+			</div>
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	.contact-hero {
+		padding-block: clamp(var(--space-7), 7vw, var(--space-8));
+	}
+
+	.hero-inner {
+		max-width: 58rem;
+	}
+
+	.eyebrow {
+		margin-bottom: var(--space-3);
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 13ch;
+		font-size: clamp(2.5rem, 8vw, 4.5rem);
+	}
+
+	.lead {
+		max-width: 42rem;
+		margin: 0;
+		color: var(--color-text-muted);
+		font-size: clamp(1.075rem, 2.2vw, 1.25rem);
+	}
+
+	.contact-options {
+		padding-bottom: var(--section-padding-block);
+	}
+
+	.contact-grid {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.contact-card {
+		display: flex;
+		min-height: 13rem;
+		flex-direction: column;
+		align-items: flex-start;
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		transition:
+			border-color 160ms ease,
+			box-shadow 160ms ease,
+			transform 160ms ease;
+	}
+
+	a.contact-card:hover {
+		border-color: var(--color-accent);
+		box-shadow: var(--shadow-md);
+		text-decoration: none;
+		transform: translateY(-2px);
+	}
+
+	.contact-icon {
+		display: grid;
+		width: 2.75rem;
+		height: 2.75rem;
+		margin-bottom: var(--space-4);
+		place-items: center;
+		border-radius: var(--radius-sm);
+		background: var(--color-background);
+		color: var(--color-accent);
+		font-size: 1.25rem;
+		font-weight: 800;
+	}
+
+	.contact-label {
+		color: var(--color-text-muted);
+		font-size: 0.78rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.contact-card strong {
+		color: var(--color-primary);
+		font-size: 1.25rem;
+	}
+
+	.contact-action {
+		margin-top: auto;
+		padding-top: var(--space-3);
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+
+	.contact-card--hours .contact-action {
+		color: var(--color-text-muted);
+	}
+
+	.form-section {
+		padding-block: var(--section-padding-block);
+		background: var(--color-surface);
+	}
+
+	.form-layout {
+		display: grid;
+		gap: var(--space-7);
+		align-items: start;
+	}
+
+	.form-intro :global(.section-heading) {
+		margin-bottom: var(--space-6);
+	}
+
+	.service-area-note {
+		padding: var(--space-5);
+		border-left: 3px solid var(--color-accent);
+		background: var(--color-background);
+	}
+
+	.service-area-note h3 {
+		margin-bottom: var(--space-2);
+		font-size: 1rem;
+	}
+
+	.service-area-note p {
+		margin-bottom: var(--space-3);
+		color: var(--color-text-muted);
+	}
+
+	.service-area-note a {
+		font-weight: 800;
+	}
+
+	.form-card {
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-background);
+		box-shadow: var(--shadow-md);
+	}
+
+	.prototype-note {
+		display: grid;
+		gap: var(--space-1);
+		margin-bottom: var(--space-5);
+		padding: var(--space-4);
+		border: 1px solid color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+		border-radius: var(--radius-sm);
+		background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface));
+		color: var(--color-text-muted);
+		font-size: 0.875rem;
+	}
+
+	.prototype-note strong {
+		color: var(--color-primary);
+	}
+
+	.field-grid {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.field {
+		display: grid;
+		gap: var(--space-2);
+	}
+
+	label {
+		color: var(--color-primary);
+		font-size: 0.9rem;
+		font-weight: 800;
+	}
+
+	label span,
+	.required-note span {
+		color: var(--color-accent);
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		border: var(--border);
+		border-radius: var(--radius-sm);
+		background: var(--color-surface);
+		color: var(--color-text);
+	}
+
+	input,
+	select {
+		min-height: 3rem;
+		padding-inline: var(--space-3);
+	}
+
+	textarea {
+		min-height: 8rem;
+		padding: var(--space-3);
+		resize: vertical;
+	}
+
+	input:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible {
+		border-color: var(--color-focus);
+		outline: 3px solid color-mix(in srgb, var(--color-focus) 30%, transparent);
+		outline-offset: 1px;
+	}
+
+	.required-note {
+		margin-block: var(--space-4);
+		color: var(--color-text-muted);
+		font-size: 0.8rem;
+	}
+
+	.form-card :global(.button) {
+		width: 100%;
+	}
+
+	.trust-section {
+		padding-block: var(--space-5);
+		background: var(--color-primary);
+		color: var(--color-surface);
+	}
+
+	.trust-grid {
+		display: grid;
+		gap: var(--space-3);
+	}
+
+	.trust-grid p {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 700;
+	}
+
+	.trust-grid span {
+		margin-right: var(--space-2);
+		color: var(--color-accent);
+		font-size: 0.65rem;
+	}
+
+	@media (min-width: 40rem) {
+		.contact-grid,
+		.trust-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.field-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.field--wide {
+			grid-column: 1 / -1;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.form-layout {
+			grid-template-columns: minmax(18rem, 0.65fr) minmax(0, 1fr);
+			gap: var(--space-9);
+		}
+
+		.form-card {
+			padding: var(--space-6);
+		}
+	}
+</style>

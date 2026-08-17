@@ -4,6 +4,7 @@ interface Props {
 	href?: string;
 	type?: 'button' | 'submit' | 'reset';
 	ariaLabel?: string;
+	ariaDescribedby?: string;
 	class?: string;
 }
 
@@ -12,6 +13,7 @@ const {
 	href,
 	type = 'button',
 	ariaLabel,
+	ariaDescribedby,
 	class: className = '',
 } = Astro.props;
 
@@ -20,11 +22,11 @@ const classes = ['button', `button--${variant}`, className].filter(Boolean).join
 
 {
 	href ? (
-		<a class={classes} href={href} aria-label={ariaLabel}>
+		<a class={classes} href={href} aria-label={ariaLabel} aria-describedby={ariaDescribedby}>
 			<slot />
 		</a>
 	) : (
-		<button class={classes} type={type} aria-label={ariaLabel}>
+		<button class={classes} type={type} aria-label={ariaLabel} aria-describedby={ariaDescribedby}>
 			<slot />
 		</button>
 	)

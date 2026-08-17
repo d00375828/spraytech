@@ -1,0 +1,376 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import CTA from '../../components/CTA.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { serviceAreas } from '../../data/serviceAreas';
+import { services } from '../../data/services';
+import { site } from '../../data/site';
+
+const title = 'Pest & Weed Control Service Areas | Spraytech St. George';
+const description =
+	'Spraytech Pest and Weed Control serves St. George, Washington, Santa Clara, Ivins, and Hurricane, Utah with local pest and weed control services.';
+
+const areaDescriptions: Record<string, string> = {
+	'st-george': 'Primary service area.',
+	washington: 'Local pest and weed control service for Washington-area homeowners.',
+	'santa-clara': 'Serving residential properties throughout Santa Clara.',
+	ivins: 'Local service for homes and properties in the Ivins area.',
+	hurricane: 'Serving homeowners in Hurricane and the surrounding area.',
+};
+---
+
+<BaseLayout {title} {description}>
+	<main id="main-content">
+		<section class="areas-hero" aria-labelledby="areas-hero-heading">
+			<div class="container hero-inner">
+				<p class="eyebrow">Service Areas</p>
+				<h1 id="areas-hero-heading">Local Pest and Weed Control Across the St. George Area.</h1>
+				<p class="lead">
+					Spraytech Pest and Weed Control is based in St. George and serves homeowners throughout
+					nearby Southern Utah communities.
+				</p>
+				<div class="hero-actions">
+					<Button href="/contact/">Get a Free Quote</Button>
+					<Button
+						href={site.phone.smsHref}
+						variant="secondary"
+						ariaLabel={`Call or text Spraytech at ${site.phone.display}`}
+					>
+						Call or Text {site.phone.display}
+					</Button>
+				</div>
+			</div>
+		</section>
+
+		<section class="page-section primary-section" aria-labelledby="primary-heading">
+			<div class="container primary-grid">
+				<div>
+					<SectionHeading
+						eyebrow="Based in St. George"
+						heading="Serving St. George and the Communities Around It."
+						id="primary-heading"
+					/>
+					<p class="primary-copy">
+						St. George is Spraytech's primary service area. As a locally owned company, Spraytech
+						also helps homeowners in nearby communities throughout the surrounding Southern Utah
+						area with practical pest and weed control.
+					</p>
+				</div>
+
+				<aside class="local-card" aria-label="Primary service location">
+					<span class="location-mark" aria-hidden="true">⌖</span>
+					<p class="local-label">Primary market</p>
+					<h2>{site.primaryLocation.city}, {site.primaryLocation.state}</h2>
+					<p>Locally based and serving nearby Southern Utah communities.</p>
+				</aside>
+			</div>
+		</section>
+
+		<section class="page-section cards-section" aria-labelledby="locations-heading">
+			<div class="container">
+				<h2 class="visually-hidden" id="locations-heading">Spraytech service areas</h2>
+				<div class="area-cards">
+					{
+						serviceAreas.map((area, index) => (
+							<article class:list={['area-card', { 'area-card--primary': index === 0 }]}>
+								<span class="area-number" aria-hidden="true">0{index + 1}</span>
+								<h3>{area.name}</h3>
+								<p>{areaDescriptions[area.slug]}</p>
+								<span class="future-note">Need to make each location page</span>
+							</article>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="page-section services-section" aria-labelledby="services-heading">
+			<div class="container services-layout">
+				<div>
+					<SectionHeading
+						heading="Pest and Weed Control Wherever You Call Home."
+						supportingText="Spraytech provides practical service for common Southern Utah pests and unwanted weeds throughout its service area."
+						id="services-heading"
+					/>
+					<a class="services-link" href="/services/">Explore all services <span aria-hidden="true">→</span></a>
+				</div>
+
+				<ul class="service-list">
+					{
+						services.map((service) => (
+							<li>
+								{service.slug === 'scorpion-control' ? (
+									<a href="/scorpion-control/">{service.name}<span aria-hidden="true">→</span></a>
+								) : (
+									<span>{service.name}</span>
+								)}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class="nearby-cta" aria-labelledby="nearby-heading">
+			<div class="container nearby-card">
+				<div>
+					<h2 id="nearby-heading">Outside These Areas?</h2>
+					<p>
+						If you're nearby and don't see your community listed, call or text Spraytech and we'll
+						let you know if we can help.
+					</p>
+				</div>
+				<Button
+					href={site.phone.smsHref}
+					variant="secondary"
+					ariaLabel={`Call or text Spraytech at ${site.phone.display}`}
+				>
+					Call or Text {site.phone.display}
+				</Button>
+			</div>
+		</section>
+
+		<CTA
+			headline="Need Pest or Weed Control in Southern Utah?"
+			copy="Tell Spraytech where you're located and what you're dealing with."
+			quoteLabel="Get a Free Quote"
+			phoneLabel={`Call or Text ${site.phone.display}`}
+			headingId="areas-cta-heading"
+		/>
+	</main>
+</BaseLayout>
+
+<style>
+	.areas-hero {
+		padding-block: clamp(var(--space-7), 7vw, var(--space-9));
+		background:
+			linear-gradient(115deg, transparent 65%, rgb(182 91 58 / 0.07)),
+			var(--color-background);
+	}
+
+	.hero-inner {
+		max-width: 58rem;
+	}
+
+	.eyebrow,
+	.local-label {
+		margin-bottom: var(--space-3);
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 15ch;
+		font-size: clamp(2.5rem, 8vw, 4.5rem);
+	}
+
+	.lead {
+		max-width: 44rem;
+		color: var(--color-text-muted);
+		font-size: clamp(1.075rem, 2.2vw, 1.25rem);
+	}
+
+	.hero-actions {
+		display: flex;
+		align-items: stretch;
+		flex-direction: column;
+		gap: var(--space-3);
+		margin-top: var(--space-6);
+	}
+
+	.page-section {
+		padding-block: var(--section-padding-block);
+	}
+
+	.primary-section,
+	.services-section {
+		background: var(--color-surface);
+	}
+
+	.primary-grid,
+	.services-layout {
+		display: grid;
+		gap: var(--space-7);
+		align-items: center;
+	}
+
+	.primary-grid :global(.section-heading),
+	.services-layout :global(.section-heading) {
+		margin-bottom: var(--space-5);
+	}
+
+	.primary-copy {
+		max-width: 44rem;
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	.local-card {
+		padding: var(--space-6);
+		border: var(--border);
+		border-top: 3px solid var(--color-accent);
+		background: var(--color-background);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.location-mark {
+		display: grid;
+		width: 3rem;
+		height: 3rem;
+		margin-bottom: var(--space-5);
+		place-items: center;
+		border-radius: var(--radius-sm);
+		background: var(--color-surface);
+		color: var(--color-accent);
+		font-size: 1.5rem;
+	}
+
+	.local-card h2 {
+		font-size: 1.5rem;
+	}
+
+	.local-card > p:last-child {
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	.area-cards {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.area-card {
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.area-card--primary {
+		border-top: 3px solid var(--color-accent);
+	}
+
+	.area-number {
+		display: block;
+		margin-bottom: var(--space-5);
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+	}
+
+	.area-card h3 {
+		font-size: 1.25rem;
+	}
+
+	.area-card p {
+		color: var(--color-text-muted);
+	}
+
+	.future-note {
+		color: var(--color-text-muted);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.services-link {
+		font-weight: 800;
+	}
+
+	.service-list {
+		display: grid;
+		gap: var(--space-3);
+		margin: 0;
+		list-style: none;
+	}
+
+	.service-list li > a,
+	.service-list li > span {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
+		padding: var(--space-3) var(--space-4);
+		border: var(--border);
+		background: var(--color-background);
+		color: var(--color-primary);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.service-list a:hover {
+		border-color: var(--color-accent);
+	}
+
+	.service-list a span {
+		color: var(--color-accent);
+	}
+
+	.nearby-cta {
+		padding-block: var(--space-5);
+		background: var(--color-background);
+	}
+
+	.nearby-card {
+		display: grid;
+		gap: var(--space-5);
+		align-items: center;
+		padding: var(--space-5);
+		border: var(--border);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.nearby-card h2 {
+		margin-bottom: var(--space-2);
+		font-size: clamp(1.5rem, 4vw, 2rem);
+	}
+
+	.nearby-card p {
+		max-width: 44rem;
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	@media (min-width: 34rem) {
+		.hero-actions {
+			align-items: flex-start;
+			flex-direction: row;
+		}
+
+		.area-cards {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 48rem) {
+		.area-cards {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.service-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nearby-card {
+			grid-template-columns: minmax(0, 1fr) auto;
+			padding: var(--space-6);
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.primary-grid,
+		.services-layout {
+			grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.7fr);
+			gap: var(--space-9);
+		}
+	}
+</style>

@@ -11,6 +11,7 @@ export const site = {
 	phone: {
 		display: '(435) 705-3696',
 		href: 'tel:+14357053696',
+		smsHref: 'sms:+14357053696',
 	},
 	hours: {
 		display: 'Monday-Saturday, 7 AM-7 PM',
