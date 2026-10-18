@@ -64,7 +64,7 @@ const classes = ['button', `button--${variant}`, className].filter(Boolean).join
 
 	.button--primary {
 		background: var(--color-accent);
-		color: var(--color-surface);
+		color: var(--color-on-primary);
 	}
 
 	.button--primary:hover {
@@ -78,7 +78,8 @@ const classes = ['button', `button--${variant}`, className].filter(Boolean).join
 	}
 
 	.button--secondary:hover {
-		background: var(--color-primary);
-		color: var(--color-surface);
+		border-color: var(--color-accent);
+		background: var(--color-accent);
+		color: var(--color-on-primary);
 	}
 </style>

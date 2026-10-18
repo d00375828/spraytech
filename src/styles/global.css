@@ -2,28 +2,43 @@
 	color-scheme: light;
 
 	/* Color */
-	--color-primary: #07090d;
-	--color-primary-soft: #11151b;
+	--surface-dark: rgb(17 24 39 / 0.9);
+	--surface-dark-soft: rgb(17 21 27 / 0.82);
+	--surface-blue-soft: rgb(13 71 161 / 0.16);
+	--text-primary: #ffffff;
+	--text-secondary: #c9d2dc;
+	--text-muted: #94a3b8;
+	--border-dark: rgb(255 255 255 / 0.12);
+	--color-primary: var(--text-primary);
+	--color-primary-soft: var(--surface-dark-soft);
 	--color-accent: #1f6feb;
 	--color-accent-hover: #165cc7;
-	--color-accent-soft: #eef5ff;
-	--color-background: #f8fafc;
-	--color-surface: #ffffff;
-	--color-text: #111827;
-	--color-text-muted: #667085;
-	--color-border: #dde3ea;
+	--color-accent-soft: var(--surface-blue-soft);
+	--color-background: var(--surface-dark-soft);
+	--color-surface: var(--surface-dark);
+	--color-page-overlay: rgb(5 7 11 / 0.18);
+	--color-text: var(--text-secondary);
+	--color-text-muted: var(--text-muted);
+	--color-border: var(--border-dark);
 	--color-focus: #1f6feb;
-	--color-on-primary: #ffffff;
-	--color-on-primary-muted: #cbd5e1;
+	--color-on-primary: var(--text-primary);
+	--color-on-primary-muted: var(--text-secondary);
 	--color-on-primary-subtle: rgb(255 255 255 / 0.08);
 	--color-border-on-primary: rgb(255 255 255 / 0.16);
 	--brand-black: #05070b;
 	--brand-black-soft: #070b12;
 	--brand-navy: #07152b;
 	--brand-navy-deep: #0a1a33;
-	--brand-blue-dark: #0d47a1;
+	--brand-blue-dark: #123a7a;
 	--brand-blue: #1f6feb;
 	--brand-blue-bright: #2f80ed;
+	--site-background-gradient: linear-gradient(
+		90deg,
+		var(--brand-black) 0%,
+		var(--brand-black-soft) 35%,
+		var(--brand-navy-deep) 68%,
+		var(--brand-blue-dark) 100%
+	);
 
 	/* Typography */
 	--font-family-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -81,7 +96,10 @@ body {
 	margin: 0;
 	min-width: 20rem;
 	min-height: 100vh;
-	background: var(--color-background);
+	background-color: var(--brand-black);
+	background-image: var(--site-background-gradient);
+	background-attachment: fixed;
+	background-size: 100% 100vh;
 	color: var(--color-text);
 	font-family: var(--font-family-sans);
 	font-size: 1rem;
@@ -92,6 +110,11 @@ body {
 
 main {
 	flex: 1;
+	background: transparent;
+}
+
+main > section {
+	background: transparent !important;
 }
 
 body,

@@ -44,7 +44,7 @@ const {
 <style>
 	.cta {
 		padding-block: var(--space-8);
-		background: var(--color-primary);
+		background: transparent;
 	}
 
 	.cta-inner {
@@ -55,7 +55,7 @@ const {
 
 	h2,
 	p {
-		color: var(--color-surface);
+		color: var(--color-on-primary);
 	}
 
 	h2 {
@@ -82,13 +82,14 @@ const {
 	}
 
 	.cta-actions :global(.button--secondary) {
-		border-color: var(--color-surface);
-		color: var(--color-surface);
+		border-color: var(--color-on-primary);
+		color: var(--color-on-primary);
 	}
 
 	.cta-actions :global(.button--secondary:hover) {
-		background: var(--color-surface);
-		color: var(--color-primary);
+		border-color: var(--color-accent);
+		background: var(--color-accent);
+		color: var(--color-on-primary);
 	}
 
 	@media (min-width: 48rem) {
