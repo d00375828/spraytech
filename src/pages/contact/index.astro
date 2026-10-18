@@ -8,7 +8,7 @@ import { site } from '../../data/site';
 
 const title = 'Contact Spraytech Pest and Weed Control | St. George, UT';
 const description =
-	'Contact Spraytech Pest and Weed Control in St. George, Utah. Call or text for pest control, weed control, and free quote information.';
+	'Contact Spraytech Pest and Weed Control in St. George, Utah. Call, text, email, or request a free quote for pest and weed control service.';
 ---
 
 <BaseLayout {title} {description}>
@@ -17,10 +17,11 @@ const description =
 			<div class="container hero-inner">
 				<p class="eyebrow">Contact Spraytech</p>
 				<h1 id="contact-heading">Tell Us What You're Dealing With.</h1>
-				<p class="lead">
-					Have a pest or weed problem? Get in touch with Spraytech and we'll help you figure out
-					the right next step.
-				</p>
+				<p class="lead">Have a pest or weed problem? Call, text, email, or request a quote and Spraytech will help you figure out the right next step.</p>
+				<div class="hero-actions">
+					<Button href={site.phone.smsHref} ariaLabel={`Call or text Spraytech at ${site.phone.display}`}>Call or Text {site.phone.display}</Button>
+					<Button href={site.email.href} variant="secondary">Email Spraytech</Button>
+				</div>
 			</div>
 		</section>
 
@@ -28,23 +29,12 @@ const description =
 			<div class="container">
 				<h2 class="visually-hidden" id="contact-options-heading">Contact options</h2>
 				<div class="contact-grid">
-					<a class="contact-card" href={site.phone.href}>
+					<article class="contact-card">
 						<span class="contact-icon" aria-hidden="true">↗</span>
-						<span class="contact-label">Call</span>
+						<span class="contact-label">Call or Text</span>
 						<strong>{site.phone.display}</strong>
-						<span class="contact-action">Call Spraytech <span aria-hidden="true">→</span></span>
-					</a>
-
-					<a
-						class="contact-card"
-						href={site.phone.smsHref}
-						aria-label={`Text Spraytech at ${site.phone.display}`}
-					>
-						<span class="contact-icon" aria-hidden="true">⋯</span>
-						<span class="contact-label">Text</span>
-						<strong>{site.phone.display}</strong>
-						<span class="contact-action">Text Spraytech <span aria-hidden="true">→</span></span>
-					</a>
+						<div class="card-actions"><a href={site.phone.href}>Call</a><a href={site.phone.smsHref}>Text</a></div>
+					</article>
 
 					<a class="contact-card" href={site.email.href}>
 						<span class="contact-icon" aria-hidden="true">@</span>
@@ -66,29 +56,17 @@ const description =
 		<section class="form-section" id="quote" aria-labelledby="quote-heading">
 			<div class="container form-layout">
 				<div class="form-intro">
-					<SectionHeading
-						eyebrow="Tell Us About the Problem"
-						heading="Request a Free Quote"
-						supportingText="Share a few details about your property and the service you need."
-						id="quote-heading"
-					/>
+					<SectionHeading heading="Request a Free Quote" supportingText="Tell us a little about the problem and we'll follow up with you." id="quote-heading" />
 
 					<div class="service-area-note">
-						<h3>Local service area</h3>
-						<p>
-							Serving {serviceAreas.map((area) => area.name).join(', ')}.
-						</p>
+						<h3>Serving Southern Utah</h3>
+						<p>Serving {serviceAreas.map((area) => area.name).join(', ')}.</p>
 						<a href="/service-areas/">View service areas <span aria-hidden="true">→</span></a>
 					</div>
 				</div>
 
 				<div class="form-card">
-					<div class="prototype-note" id="form-availability" role="note">
-						<strong>No backend yet just proof on concept</strong>
-						<span>For now, call or text Spraytech for service.</span>
-					</div>
-
-					<form aria-describedby="form-availability">
+					<form id="quote-form">
 						<div class="field-grid">
 							<div class="field">
 								<label for="name">Name <span aria-hidden="true">*</span></label>
@@ -97,25 +75,43 @@ const description =
 
 							<div class="field">
 								<label for="phone">Phone <span aria-hidden="true">*</span></label>
-								<input id="phone" name="phone" type="tel" autocomplete="tel" required />
-							</div>
-
-							<div class="field field--wide">
-								<label for="email">Email</label>
-								<input id="email" name="email" type="email" autocomplete="email" />
+								<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required />
 							</div>
 
 							<div class="field">
-								<label for="service">Service Needed <span aria-hidden="true">*</span></label>
-								<select id="service" name="service" required>
-									<option value="">Select a service</option>
-									{services.map((service) => <option value={service.slug}>{service.name}</option>)}
-									<option value="other">Not Sure / Other</option>
+								<label for="email">Email</label>
+								<input id="email" name="email" type="email" inputmode="email" autocomplete="email" />
+							</div>
+
+							<div class="field">
+								<label for="contact-method">Preferred Contact Method <span aria-hidden="true">*</span></label>
+								<select id="contact-method" name="contactMethod" required>
+									<option value="">Select a contact method</option>
+									<option value="call">Call</option><option value="text">Text</option><option value="email">Email</option>
 								</select>
 							</div>
 
+							<fieldset class="field service-field" aria-required="true">
+								<legend>Services Needed <span aria-hidden="true">*</span></legend>
+								<details class="multi-select">
+									<summary><span id="service-summary">Select one or more services</span></summary>
+									<div class="checkbox-grid">
+										{services.map((service) => (
+											<label class="checkbox-option">
+												<input type="checkbox" name="services" value={service.slug} data-label={service.name.replace(/ Control$/, '')} />
+												<span>{service.name}</span>
+											</label>
+										))}
+										<label class="checkbox-option">
+											<input type="checkbox" name="services" value="other" data-label="Not Sure / Other" />
+											<span>Not Sure / Other</span>
+										</label>
+									</div>
+								</details>
+							</fieldset>
+
 							<div class="field">
-								<label for="location">Location / City <span aria-hidden="true">*</span></label>
+								<label for="location">City / Service Area <span aria-hidden="true">*</span></label>
 								<select id="location" name="location" autocomplete="address-level2" required>
 									<option value="">Select your location</option>
 									{serviceAreas.map((area) => <option value={area.slug}>{area.name}</option>)}
@@ -125,12 +121,14 @@ const description =
 
 							<div class="field field--wide">
 								<label for="message">Tell us what you're dealing with</label>
-								<textarea id="message" name="message" rows="5"></textarea>
+								<textarea id="message" name="message" rows="5" placeholder="Where are you seeing the problem? How often? Anything else we should know?"></textarea>
 							</div>
 						</div>
 
 						<p class="required-note"><span aria-hidden="true">*</span> Required fields</p>
-						<Button href="/contact/" ariaDescribedby="form-availability">Request a Free Quote</Button>
+						<Button type="submit" ariaDescribedby="form-status">Request a Free Quote</Button>
+						<!-- TEMPORARY POC STATUS: replace when the form is connected to a real endpoint. -->
+						<p class="form-status" id="form-status" role="status" aria-live="polite"></p>
 					</form>
 				</div>
 			</div>
@@ -141,286 +139,133 @@ const description =
 				<p><span aria-hidden="true">◆</span> Licensed &amp; Insured</p>
 				<p><span aria-hidden="true">◆</span> One-Time &amp; Recurring Service</p>
 				<p><span aria-hidden="true">◆</span> Locally Owned</p>
+				<p><span aria-hidden="true">◆</span> No pressure into unnecessary recurring service</p>
+			</div>
+		</section>
+
+		<section class="direct-cta" aria-labelledby="direct-heading">
+			<div class="container direct-inner">
+				<div><h2 id="direct-heading">Prefer to Talk Directly?</h2><p>Call or text Spraytech at {site.phone.display}.</p></div>
+				<div class="direct-actions"><Button href={site.phone.href}>Call</Button><Button href={site.phone.smsHref} variant="secondary">Text</Button></div>
 			</div>
 		</section>
 	</main>
 </BaseLayout>
 
+<script>
+	const form = document.querySelector<HTMLFormElement>('#quote-form');
+	const status = document.querySelector<HTMLElement>('#form-status');
+	const serviceSummary = document.querySelector<HTMLElement>('#service-summary');
+	const serviceDropdown = document.querySelector<HTMLDetailsElement>('.multi-select');
+	const serviceDropdownToggle = serviceDropdown?.querySelector<HTMLElement>('summary');
+	const serviceOptions = Array.from(
+		document.querySelectorAll<HTMLInputElement>('input[name="services"]'),
+	);
+
+	const validateServices = () => {
+		const selected = serviceOptions.filter((option) => option.checked);
+		const hasSelection = selected.length > 0;
+		serviceOptions[0]?.setCustomValidity(hasSelection ? '' : 'Select at least one service.');
+		if (serviceSummary) {
+			serviceSummary.textContent = hasSelection
+				? selected.map((option) => option.dataset.label).join(', ')
+				: 'Select one or more services';
+		}
+	};
+
+	serviceOptions.forEach((option) => option.addEventListener('change', validateServices));
+
+	document.addEventListener('click', (event) => {
+		if (serviceDropdown?.open && event.target instanceof Node && !serviceDropdown.contains(event.target)) {
+			serviceDropdown.open = false;
+		}
+	});
+
+	serviceDropdown?.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && serviceDropdown.open) {
+			serviceDropdown.open = false;
+			serviceDropdownToggle?.focus();
+		}
+	});
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		validateServices();
+		if (!form.reportValidity()) return;
+		// TEMPORARY PROOF-OF-CONCEPT: replace with the real submission request later.
+		if (status) {
+			status.textContent = 'Quote form is ready to connect. For now, call, text, or email Spraytech directly.';
+			status.focus();
+		}
+	});
+</script>
+
 <style>
-	.contact-hero {
-		padding-block: clamp(var(--space-7), 7vw, var(--space-8));
-	}
-
-	.hero-inner {
-		max-width: 58rem;
-	}
-
-	.eyebrow {
-		margin-bottom: var(--space-3);
-		color: var(--color-accent);
-		font-size: 0.8rem;
-		font-weight: 800;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-
-	h1 {
-		max-width: 13ch;
-		font-size: clamp(2.5rem, 8vw, 4.5rem);
-	}
-
-	.lead {
-		max-width: 42rem;
-		margin: 0;
-		color: var(--color-text-muted);
-		font-size: clamp(1.075rem, 2.2vw, 1.25rem);
-	}
-
-	.contact-options {
-		padding-bottom: var(--section-padding-block);
-	}
-
-	.contact-grid {
-		display: grid;
-		gap: var(--space-4);
-	}
-
-	.contact-card {
-		display: flex;
-		min-height: 13rem;
-		flex-direction: column;
-		align-items: flex-start;
-		padding: var(--space-5);
-		border: var(--border);
-		border-radius: var(--radius-md);
-		background: var(--color-surface);
-		box-shadow: var(--shadow-sm);
-		color: var(--color-text);
-		text-decoration: none;
-		transition:
-			border-color 160ms ease,
-			box-shadow 160ms ease,
-			transform 160ms ease;
-	}
-
-	a.contact-card:hover {
-		border-color: var(--color-accent);
-		box-shadow: var(--shadow-md);
-		text-decoration: none;
-		transform: translateY(-2px);
-	}
-
-	.contact-icon {
-		display: grid;
-		width: 2.75rem;
-		height: 2.75rem;
-		margin-bottom: var(--space-4);
-		place-items: center;
-		border-radius: var(--radius-sm);
-		background: var(--color-background);
-		color: var(--color-accent);
-		font-size: 1.25rem;
-		font-weight: 800;
-	}
-
-	.contact-label {
-		color: var(--color-text-muted);
-		font-size: 0.78rem;
-		font-weight: 800;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-
-	.contact-card strong {
-		color: var(--color-primary);
-		font-size: 1.25rem;
-		overflow-wrap: anywhere;
-	}
-
-	.contact-action {
-		margin-top: auto;
-		padding-top: var(--space-3);
-		color: var(--color-accent);
-		font-weight: 700;
-	}
-
-	.contact-card--hours .contact-action {
-		color: var(--color-text-muted);
-	}
-
-	.form-section {
-		padding-block: var(--section-padding-block);
-		background: var(--color-surface);
-	}
-
-	.form-layout {
-		display: grid;
-		gap: var(--space-7);
-		align-items: start;
-	}
-
-	.form-intro :global(.section-heading) {
-		margin-bottom: var(--space-6);
-	}
-
-	.service-area-note {
-		padding: var(--space-5);
-		border-left: 3px solid var(--color-accent);
-		background: var(--color-background);
-	}
-
-	.service-area-note h3 {
-		margin-bottom: var(--space-2);
-		font-size: 1rem;
-	}
-
-	.service-area-note p {
-		margin-bottom: var(--space-3);
-		color: var(--color-text-muted);
-	}
-
-	.service-area-note a {
-		font-weight: 800;
-	}
-
-	.form-card {
-		padding: var(--space-5);
-		border: var(--border);
-		border-radius: var(--radius-md);
-		background: var(--color-background);
-		box-shadow: var(--shadow-md);
-	}
-
-	.prototype-note {
-		display: grid;
-		gap: var(--space-1);
-		margin-bottom: var(--space-5);
-		padding: var(--space-4);
-		border: 1px solid color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
-		border-radius: var(--radius-sm);
-		background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface));
-		color: var(--color-text-muted);
-		font-size: 0.875rem;
-	}
-
-	.prototype-note strong {
-		color: var(--color-primary);
-	}
-
-	.field-grid {
-		display: grid;
-		gap: var(--space-4);
-	}
-
-	.field {
-		display: grid;
-		gap: var(--space-2);
-	}
-
-	label {
-		color: var(--color-primary);
-		font-size: 0.9rem;
-		font-weight: 800;
-	}
-
-	label span,
-	.required-note span {
-		color: var(--color-accent);
-	}
-
-	input,
-	select,
-	textarea {
-		width: 100%;
-		border: var(--border);
-		border-radius: var(--radius-sm);
-		background: var(--color-surface);
-		color: var(--color-text);
-	}
-
-	input,
-	select {
-		min-height: 3rem;
-		padding-inline: var(--space-3);
-	}
-
-	textarea {
-		min-height: 8rem;
-		padding: var(--space-3);
-		resize: vertical;
-	}
-
-	input:focus-visible,
-	select:focus-visible,
-	textarea:focus-visible {
-		border-color: var(--color-focus);
-		outline: 3px solid color-mix(in srgb, var(--color-focus) 30%, transparent);
-		outline-offset: 1px;
-	}
-
-	.required-note {
-		margin-block: var(--space-4);
-		color: var(--color-text-muted);
-		font-size: 0.8rem;
-	}
-
-	.form-card :global(.button) {
-		width: 100%;
-	}
-
-	.trust-section {
-		padding-block: var(--space-5);
-		background: var(--brand-black);
-		color: var(--color-on-primary);
-	}
-
-	.trust-grid {
-		display: grid;
-		gap: var(--space-3);
-	}
-
-	.trust-grid p {
-		margin: 0;
-		font-size: 0.875rem;
-		font-weight: 700;
-	}
-
-	.trust-grid span {
-		margin-right: var(--space-2);
-		color: var(--color-accent);
-		font-size: 0.65rem;
-	}
-
-	@media (min-width: 40rem) {
-		.contact-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		.trust-grid {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-
-		.field-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		.field--wide {
-			grid-column: 1 / -1;
-		}
-	}
-
-	@media (min-width: 64rem) {
-		.contact-grid {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-		}
-
-		.form-layout {
-			grid-template-columns: minmax(18rem, 0.65fr) minmax(0, 1fr);
-			gap: var(--space-9);
-		}
-
-		.form-card {
-			padding: var(--space-6);
-		}
-	}
+	.contact-hero { padding-block: clamp(var(--space-7), 7vw, var(--space-8)); }
+	.hero-inner { max-width: 58rem; }
+	.eyebrow { margin-bottom: var(--space-3); color: var(--color-accent); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+	h1 { max-width: 13ch; font-size: clamp(2.5rem, 8vw, 4.5rem); }
+	.lead { max-width: 44rem; color: var(--color-text-muted); font-size: clamp(1.075rem, 2.2vw, 1.25rem); }
+	.hero-actions, .direct-actions { display: flex; align-items: stretch; flex-direction: column; gap: var(--space-3); margin-top: var(--space-6); }
+	.contact-options { padding-bottom: var(--section-padding-block); }
+	.contact-grid { display: grid; gap: var(--space-4); }
+	.contact-card { display: flex; min-height: 13rem; flex-direction: column; align-items: flex-start; padding: var(--space-5); border: var(--border); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-sm); color: var(--color-text); text-decoration: none; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+	a.contact-card:hover { border-color: var(--color-accent); box-shadow: var(--shadow-md); text-decoration: none; transform: translateY(-2px); }
+	.contact-icon { display: grid; width: 2.75rem; height: 2.75rem; margin-bottom: var(--space-4); place-items: center; border-radius: var(--radius-sm); background: var(--color-background); color: var(--color-accent); font-size: 1.25rem; font-weight: 800; }
+	.contact-label { color: var(--color-text-muted); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+	.contact-card strong { color: var(--color-primary); font-size: 1.25rem; overflow-wrap: anywhere; }
+	.contact-action { margin-top: auto; padding-top: var(--space-3); color: var(--color-accent); font-weight: 700; }
+	.contact-card--hours .contact-action { color: var(--color-text-muted); }
+	.card-actions { display: flex; gap: var(--space-3); margin-top: auto; padding-top: var(--space-3); }
+	.card-actions a { font-weight: 800; }
+	.form-section { padding-block: var(--section-padding-block); }
+	.form-layout { display: grid; gap: var(--space-7); align-items: start; }
+	.form-intro :global(.section-heading) { margin-bottom: var(--space-6); }
+	.service-area-note { padding: var(--space-5); border-left: 3px solid var(--color-accent); background: var(--color-surface); }
+	.service-area-note h3 { margin-bottom: var(--space-2); font-size: 1rem; }
+	.service-area-note p { margin-bottom: var(--space-3); color: var(--color-text-muted); }
+	.service-area-note a { font-weight: 800; }
+	.form-card { padding: var(--space-5); border: var(--border); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-md); }
+	.field-grid { display: grid; gap: var(--space-4); }
+	.field { display: grid; gap: var(--space-2); }
+	label, legend { color: var(--color-primary); font-size: 0.9rem; font-weight: 800; }
+	label span, legend > span, .required-note span { color: var(--color-accent); }
+	fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+	.multi-select { position: relative; }
+	.multi-select[open] { z-index: 10; }
+	.multi-select summary { position: relative; display: flex; width: 100%; height: 3rem; min-height: 3rem; align-items: center; padding: 0 calc(var(--space-7) + var(--space-2)) 0 var(--space-3); border: var(--border); border-radius: var(--radius-sm); background: var(--color-background); color: var(--color-primary); font-size: 1rem; font-weight: 400; line-height: normal; cursor: pointer; list-style: none; }
+	.multi-select summary > span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+	.multi-select summary::-webkit-details-marker { display: none; }
+	.multi-select summary::after { position: absolute; top: 50%; right: var(--space-3); color: var(--color-accent); content: '▾'; transform: translateY(-50%); }
+	.multi-select[open] summary { border-color: var(--color-focus); }
+	.multi-select[open] summary::after { content: '▴'; }
+	.multi-select summary:focus-visible { outline: 3px solid color-mix(in srgb, var(--color-focus) 30%, transparent); outline-offset: 1px; }
+	.checkbox-grid { position: absolute; top: calc(100% + var(--space-2)); left: 0; display: grid; overflow-y: auto; width: 100%; max-height: 20rem; gap: var(--space-2); padding: var(--space-3); border: var(--border); border-radius: var(--radius-sm); background: var(--color-surface); box-shadow: var(--shadow-md); }
+	.checkbox-option { display: flex; min-height: 3rem; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border: var(--border); border-radius: var(--radius-sm); background: var(--color-background); cursor: pointer; }
+	.checkbox-option:hover { border-color: var(--color-accent); }
+	.checkbox-option input { width: 1.1rem; height: 1.1rem; min-height: auto; flex: 0 0 auto; margin: 0; accent-color: var(--color-accent); }
+	.checkbox-option span { color: var(--color-primary); }
+	.checkbox-option:has(input:focus-visible) { border-color: var(--color-focus); outline: 3px solid color-mix(in srgb, var(--color-focus) 30%, transparent); outline-offset: 1px; }
+	.checkbox-option input:focus-visible { outline: none; }
+	input, select, textarea { width: 100%; border: var(--border); border-radius: var(--radius-sm); background: var(--color-background); color: var(--color-primary); }
+	input, select { min-height: 3rem; padding-inline: var(--space-3); }
+	textarea { min-height: 8rem; padding: var(--space-3); resize: vertical; }
+	textarea::placeholder { color: var(--color-text-muted); opacity: 0.85; }
+	input:focus-visible, select:focus-visible, textarea:focus-visible { border-color: var(--color-focus); outline: 3px solid color-mix(in srgb, var(--color-focus) 30%, transparent); outline-offset: 1px; }
+	.required-note { margin-block: var(--space-4); color: var(--color-text-muted); font-size: 0.8rem; }
+	.form-card :global(.button) { width: 100%; }
+	.form-status { min-height: 1.5rem; margin: var(--space-4) 0 0; color: var(--color-primary); font-size: 0.9rem; font-weight: 700; }
+	.trust-section { padding-block: var(--space-5); }
+	.trust-grid { display: grid; gap: var(--space-3); }
+	.trust-grid p { margin: 0; font-size: 0.875rem; font-weight: 700; }
+	.trust-grid span { margin-right: var(--space-2); color: var(--color-accent); font-size: 0.65rem; }
+	.direct-cta { padding-block: var(--space-8); }
+	.direct-inner { display: grid; gap: var(--space-6); align-items: center; padding: var(--space-6); border: var(--border); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-sm); }
+	.direct-inner h2 { font-size: clamp(2rem, 6vw, 3rem); }
+	.direct-inner p { margin: 0; color: var(--color-text-muted); }
+	.direct-actions { margin-top: 0; }
+	@media (min-width: 34rem) { .hero-actions { align-items: flex-start; flex-direction: row; } }
+	@media (min-width: 40rem) { .contact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .trust-grid, .field-grid, .checkbox-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .field--wide { grid-column: 1 / -1; } }
+	@media (min-width: 48rem) { .direct-inner { grid-template-columns: minmax(0, 1fr) auto; } .direct-actions { flex-direction: row; } }
+	@media (min-width: 64rem) { .form-layout { grid-template-columns: minmax(18rem, 0.65fr) minmax(0, 1fr); gap: var(--space-9); } .form-card { padding: var(--space-6); } .trust-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 </style>
