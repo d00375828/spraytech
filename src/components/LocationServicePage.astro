@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTA from './CTA.astro';
+import SectionHeading from './SectionHeading.astro';
+import ServiceCard from './ServiceCard.astro';
+import ServiceHero from './ServiceHero.astro';
+import { serviceAreas } from '../data/serviceAreas';
+import { services } from '../data/services';
+import { site } from '../data/site';
+
+interface Props {
+	city: string;
+	slug: string;
+	title: string;
+	description: string;
+	heroEyebrow: string;
+	heroHeading: string;
+	heroCopy: string;
+	localHeading: string;
+	localCopy: readonly string[];
+	ctaHeadline: string;
+}
+
+const { city, slug, title, description, heroEyebrow, heroHeading, heroCopy, localHeading, localCopy, ctaHeadline } = Astro.props;
+
+const benefits = [
+	{ title: 'Southern Utah Knowledge', copy: 'Spraytech is locally owned by someone who has lived in Southern Utah his whole life and understands the conditions homeowners here deal with.' },
+	{ title: 'Fast, Personal Communication', copy: 'Customers work with a local company instead of navigating a giant call center.' },
+	{ title: 'Service Based on What You Need', copy: 'Spraytech offers both one-time and recurring options without automatically pushing every customer into the same plan.' },
+] as const;
+
+const propertyAreas = ['Home interiors', 'Garages', 'Patios and outdoor living areas', 'Rock landscaping', 'Yards and landscaped areas', 'Exterior walls and entry areas'] as const;
+
+const faqs = [
+	{ question: `What pest control services do you offer in ${city}?`, answer: `Spraytech provides service in ${city} for scorpions, spiders, ants, cockroaches, wasps, rodents, and other common pest problems we can evaluate. We also provide weed-control service.` },
+	{ question: `Do you offer weed control in ${city}?`, answer: `Yes. Spraytech provides weed-control service for unwanted growth around residential properties in ${city}.` },
+	{ question: 'Do you offer one-time service?', answer: "Yes. One-time and recurring options are available depending on your property and the problem you're dealing with." },
+	{ question: 'Do I have to sign up for recurring service?', answer: "No. We'll recommend the option that makes sense for your situation without pressuring you into ongoing service you don't want." },
+	{ question: 'Are you licensed and insured?', answer: 'Yes. Spraytech Pest and Weed Control is licensed and insured.' },
+	{ question: 'How do I get a quote?', answer: `Call or text ${site.phone.display} or use the website to request a free quote.` },
+] as const;
+
+const nearbyAreas = serviceAreas.filter((area) => area.slug !== slug);
+---
+
+<BaseLayout {title} {description}>
+	<main id="main-content">
+		<ServiceHero eyebrow={heroEyebrow} heading={heroHeading} copy={heroCopy} icon="scorpion-control" visualLabel={`Pest and weed control service in ${city} image placeholder`} headingId={`${slug}-hero-heading`} />
+
+		<section class="page-section intro-section" aria-labelledby={`${slug}-local-heading`}>
+			<div class="container intro-grid">
+				<SectionHeading eyebrow="Local Service" heading={localHeading} id={`${slug}-local-heading`} />
+				<div class="body-copy">
+					{localCopy.map((paragraph) => <p>{paragraph}</p>)}
+					<a class="text-link" href="/services/">Explore all services <span aria-hidden="true">→</span></a>
+				</div>
+			</div>
+		</section>
+
+		<section class="page-section services-section" aria-labelledby={`${slug}-services-heading`}>
+			<div class="container">
+				<SectionHeading heading={`Pest and Weed Control Services in ${city}.`} supportingText="Choose the problem you need help with to learn more about Spraytech's local service." id={`${slug}-services-heading`} />
+				<div class="services-grid">{services.map((service) => <ServiceCard title={service.name} description={service.description} href={`/${service.slug}/`} icon={service.slug} />)}</div>
+			</div>
+		</section>
+
+		<section class="page-section benefits-section" aria-labelledby={`${slug}-benefits-heading`}>
+			<div class="container">
+				<SectionHeading heading="Local Knowledge. Straightforward Service." id={`${slug}-benefits-heading`} />
+				<div class="benefits-grid">{benefits.map((benefit, index) => <article><span class="number" aria-hidden="true">0{index + 1}</span><h3>{benefit.title}</h3><p>{benefit.copy}</p></article>)}</div>
+			</div>
+		</section>
+
+		<section class="page-section property-section" aria-labelledby={`${slug}-property-heading`}>
+			<div class="container property-grid">
+				<SectionHeading heading="Helping Protect the Places Around Your Home." supportingText="Pest and weed needs differ by property. These are some of the places where homeowners may notice a problem and ask Spraytech for help." id={`${slug}-property-heading`} />
+				<ul class="property-list">{propertyAreas.map((area) => <li><span aria-hidden="true">✓</span>{area}</li>)}</ul>
+			</div>
+		</section>
+
+		<section class="page-section options-section" aria-labelledby={`${slug}-options-heading`}>
+			<div class="container options-card">
+				<div><h2 id={`${slug}-options-heading`}>Service That Fits the Property.</h2><p>Not every pest or weed problem needs the same treatment schedule. Spraytech offers one-time and recurring service and can recommend an option based on what you're dealing with.</p></div>
+				<div class="option-labels" aria-label="Available service options"><span>One-Time Service</span><span>Recurring Service</span></div>
+			</div>
+		</section>
+
+		<section class="page-section faq-section" aria-labelledby={`${slug}-faq-heading`}>
+			<div class="container faq-grid">
+				<SectionHeading heading={`${city} Pest & Weed Control Questions`} id={`${slug}-faq-heading`} />
+				<div class="faq-list">{faqs.map((faq) => <details><summary>{faq.question}</summary><div class="faq-answer"><p>{faq.answer}</p></div></details>)}</div>
+			</div>
+		</section>
+
+		<section class="page-section nearby-section" aria-labelledby={`${slug}-nearby-heading`}>
+			<div class="container">
+				<SectionHeading heading="Also Serving Nearby Southern Utah Communities." id={`${slug}-nearby-heading`} />
+				<ul class="nearby-grid">{nearbyAreas.map((area) => <li><a href={`/service-areas/${area.slug}/`}><span aria-hidden="true">⌖</span>{area.name}<span aria-hidden="true">→</span></a></li>)}</ul>
+				<a class="text-link all-areas-link" href="/service-areas/">View all service areas <span aria-hidden="true">→</span></a>
+			</div>
+		</section>
+
+		<CTA headline={ctaHeadline} copy="Tell Spraytech what you're dealing with and we'll help you figure out the right next step." quoteLabel="Get a Free Quote" phoneLabel={`Call or Text ${site.phone.display}`} headingId={`${slug}-cta-heading`} />
+	</main>
+</BaseLayout>
+
+<style>
+	.page-section { padding-block: var(--section-padding-block); }
+	.intro-grid, .property-grid, .faq-grid { display: grid; gap: var(--space-7); }
+	.intro-grid :global(.section-heading), .property-grid :global(.section-heading), .faq-grid :global(.section-heading) { margin-bottom: 0; }
+	.body-copy { max-width: 46rem; color: var(--color-text-muted); }
+	.text-link { display: inline-block; font-weight: 800; }
+	.services-grid, .benefits-grid { display: grid; gap: var(--space-4); }
+	.benefits-grid article { padding: var(--space-6); border: var(--border); border-top: 3px solid var(--color-accent); background: var(--color-surface); box-shadow: var(--shadow-sm); }
+	.number { display: block; margin-bottom: var(--space-5); color: var(--color-accent); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; }
+	.benefits-grid h3 { font-size: 1.25rem; }
+	.benefits-grid p { margin: 0; color: var(--color-text-muted); }
+	.property-list { display: grid; gap: var(--space-3); margin: 0; list-style: none; }
+	.property-list li { display: flex; gap: var(--space-3); padding: var(--space-4) var(--space-5); border: var(--border); background: var(--color-surface); color: var(--color-primary); font-weight: 700; }
+	.property-list span { color: var(--color-accent); }
+	.options-card { display: grid; gap: var(--space-5); align-items: center; padding: var(--space-6); border: var(--border); border-left: 3px solid var(--color-accent); background: var(--color-surface); box-shadow: var(--shadow-sm); }
+	.options-card h2 { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+	.options-card p { max-width: 46rem; margin: 0; color: var(--color-text-muted); }
+	.option-labels { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+	.option-labels span { padding: var(--space-3) var(--space-4); border: var(--border); background: var(--color-background); color: var(--color-primary); font-weight: 800; }
+	.faq-list { border-top: var(--border); }
+	details { border-bottom: var(--border); }
+	summary { position: relative; padding: var(--space-5) var(--space-7) var(--space-5) 0; color: var(--color-primary); font-weight: 800; cursor: pointer; list-style: none; }
+	summary::-webkit-details-marker { display: none; }
+	summary::after { position: absolute; top: 50%; right: var(--space-2); color: var(--color-accent); font-size: 1.5rem; font-weight: 400; content: '+'; transform: translateY(-50%); }
+	details[open] summary::after { content: '−'; }
+	.faq-answer { max-width: 46rem; padding: 0 var(--space-7) var(--space-5) 0; color: var(--color-text-muted); }
+	.faq-answer p { margin: 0; }
+	.nearby-grid { display: grid; gap: var(--space-3); margin: 0; list-style: none; }
+	.nearby-grid a { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4); border: var(--border); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-primary); font-weight: 800; text-decoration: none; }
+	.nearby-grid a:hover { border-color: var(--color-accent); }
+	.nearby-grid a span { color: var(--color-accent); }
+	.all-areas-link { margin-top: var(--space-5); }
+	@media (min-width: 40rem) { .services-grid, .property-list, .nearby-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+	@media (min-width: 48rem) { .benefits-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .options-card { grid-template-columns: minmax(0, 1fr) auto; } }
+	@media (min-width: 64rem) { .intro-grid, .property-grid, .faq-grid { grid-template-columns: minmax(16rem, 0.65fr) minmax(0, 1fr); gap: var(--space-8); } .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nearby-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+</style>

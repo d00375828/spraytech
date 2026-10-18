@@ -75,9 +75,9 @@ const areaDescriptions: Record<string, string> = {
 						serviceAreas.map((area, index) => (
 							<article class:list={['area-card', { 'area-card--primary': index === 0 }]}>
 								<span class="area-number" aria-hidden="true">0{index + 1}</span>
-								<h3>{area.name}</h3>
+								<h3><a href={`/service-areas/${area.slug}/`}>{area.name}</a></h3>
 								<p>{areaDescriptions[area.slug]}</p>
-								<span class="future-note">Need to make each location page</span>
+								<span class="future-note" aria-hidden="true">View service area →</span>
 							</article>
 						))
 					}
@@ -242,6 +242,7 @@ const areaDescriptions: Record<string, string> = {
 	}
 
 	.area-card {
+		position: relative;
 		padding: var(--space-5);
 		border: var(--border);
 		border-radius: var(--radius-md);
@@ -264,6 +265,27 @@ const areaDescriptions: Record<string, string> = {
 
 	.area-card h3 {
 		font-size: 1.25rem;
+	}
+
+	.area-card h3 a {
+		color: var(--color-primary);
+		text-decoration: none;
+	}
+
+	.area-card h3 a::after {
+		position: absolute;
+		inset: 0;
+		border-radius: var(--radius-md);
+		content: '';
+	}
+
+	.area-card h3 a:focus-visible {
+		outline: none;
+	}
+
+	.area-card:has(h3 a:focus-visible) {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
 	}
 
 	.area-card p {
