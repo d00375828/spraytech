@@ -6,7 +6,7 @@ export interface ServiceArea {
 }
 
 export const serviceAreas = [
-	{ name: 'St. George', slug: 'st-george', state: 'Utah', isBuilt: false },
+	{ name: 'St. George', slug: 'st-george', state: 'Utah', isBuilt: true },
 	{ name: 'Washington', slug: 'washington', state: 'Utah', isBuilt: false },
 	{ name: 'Santa Clara', slug: 'santa-clara', state: 'Utah', isBuilt: false },
 	{ name: 'Ivins', slug: 'ivins', state: 'Utah', isBuilt: false },

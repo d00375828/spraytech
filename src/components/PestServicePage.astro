@@ -45,6 +45,9 @@ interface Props {
 	ctaHeadline: string;
 	ctaCopy: string;
 	relatedLinks?: readonly RelatedLink[];
+	relatedLinksLabel?: string;
+	serviceOptionsHeading?: string;
+	serviceOptionsCopy?: string;
 }
 
 const {
@@ -72,6 +75,9 @@ const {
 	ctaHeadline,
 	ctaCopy,
 	relatedLinks = [],
+	relatedLinksLabel = 'Related services',
+	serviceOptionsHeading,
+	serviceOptionsCopy,
 } = Astro.props;
 ---
 
@@ -95,7 +101,7 @@ const {
 						<a class="text-link" href="/services/">Explore all pest and weed control services <span aria-hidden="true">→</span></a>
 						{relatedLinks.length > 0 && (
 							<p class="related-links">
-								Related services:{' '}
+								{relatedLinksLabel}:{' '}
 								{relatedLinks.map((link, index) => (
 									<><a href={link.href}>{link.label}</a>{index < relatedLinks.length - 1 ? ', ' : ''}</>
 								))}
@@ -128,6 +134,21 @@ const {
 				<ul class="signs-list">{signs.map((sign) => <li><span aria-hidden="true">→</span>{sign}</li>)}</ul>
 			</div>
 		</section>
+
+		{serviceOptionsHeading && serviceOptionsCopy && (
+			<section class="page-section options-section" aria-labelledby={`${slug}-options-heading`}>
+				<div class="container options-grid">
+					<SectionHeading heading={serviceOptionsHeading} id={`${slug}-options-heading`} />
+					<div class="options-copy">
+						<p>{serviceOptionsCopy}</p>
+						<div class="option-labels" aria-label="Available service options">
+							<span>One-Time Service</span>
+							<span>Recurring Service</span>
+						</div>
+					</div>
+				</div>
+			</section>
+		)}
 
 		<section class="page-section benefits-section" aria-labelledby={`${slug}-benefits-heading`}>
 			<div class="container">
@@ -182,6 +203,11 @@ const {
 	.signs-list { display: grid; gap: var(--space-3); }
 	.signs-list li { display: flex; gap: var(--space-3); align-items: center; padding: var(--space-4) var(--space-5); border: var(--border); background: var(--color-background); font-weight: 700; }
 	.signs-list span { color: var(--color-accent); }
+	.options-grid { display: grid; gap: var(--space-6); }
+	.options-grid :global(.section-heading) { margin-bottom: 0; }
+	.options-copy { max-width: 46rem; color: var(--color-text-muted); }
+	.option-labels { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+	.option-labels span { padding: var(--space-3) var(--space-4); border: var(--border); border-left: 3px solid var(--color-accent); background: var(--color-surface); color: var(--color-primary); font-weight: 800; }
 	.benefits-section { background: var(--brand-black); }
 	.benefits-section :global(.section-heading h2) { color: var(--color-on-primary); }
 	.benefits-grid article { border-top: 3px solid var(--color-accent); }
@@ -200,5 +226,5 @@ const {
 	.faq-answer p { margin: 0; }
 	@media (min-width: 40rem) { .areas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 	@media (min-width: 48rem) { .steps-grid, .benefits-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .areas-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-	@media (min-width: 64rem) { .local-grid { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.6fr); gap: var(--space-9); } .signs-grid, .faq-grid { grid-template-columns: minmax(16rem, 0.65fr) minmax(0, 1fr); gap: var(--space-8); } }
+	@media (min-width: 64rem) { .local-grid { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.6fr); gap: var(--space-9); } .signs-grid, .faq-grid, .options-grid { grid-template-columns: minmax(16rem, 0.65fr) minmax(0, 1fr); gap: var(--space-8); } }
 </style>

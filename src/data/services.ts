@@ -47,7 +47,7 @@ export const services = [
 		slug: 'weed-control',
 		description:
 			'Targeted weed treatment to help keep unwanted growth under control around your property.',
-		isBuilt: false,
+		isBuilt: true,
 	},
 ] as const satisfies readonly Service[];
 
