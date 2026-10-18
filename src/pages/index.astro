@@ -320,6 +320,13 @@ const faqs = [
 		position: relative;
 		overflow: hidden;
 		padding-block: clamp(var(--space-6), 6vw, var(--space-8));
+		background: linear-gradient(
+			90deg,
+			var(--brand-black) 0%,
+			var(--brand-black-soft) 35%,
+			var(--brand-navy-deep) 65%,
+			var(--brand-blue-dark) 100%
+		);
 	}
 
 	.hero-grid,
@@ -327,6 +334,11 @@ const faqs = [
 		display: grid;
 		gap: var(--space-7);
 		align-items: center;
+	}
+
+	.hero-grid {
+		position: relative;
+		z-index: 1;
 	}
 
 	.eyebrow {
@@ -340,12 +352,13 @@ const faqs = [
 
 	h1 {
 		max-width: 13ch;
+		color: var(--color-on-primary);
 		font-size: clamp(2.5rem, 8vw, 4.75rem);
 	}
 
 	.hero-copy {
 		max-width: 42rem;
-		color: var(--color-text-muted);
+		color: var(--color-on-primary-muted);
 		font-size: clamp(1.075rem, 2.2vw, 1.25rem);
 	}
 
@@ -358,10 +371,21 @@ const faqs = [
 
 	.trust-line {
 		margin: 0;
-		color: var(--color-primary);
+		color: var(--color-on-primary-muted);
 		font-size: 0.875rem;
 		font-weight: 800;
 		letter-spacing: 0.02em;
+	}
+
+	.hero-actions :global(.button--secondary) {
+		border-color: var(--color-on-primary);
+		background: transparent;
+		color: var(--color-on-primary);
+	}
+
+	.hero-actions :global(.button--secondary:hover) {
+		background: var(--color-on-primary);
+		color: var(--color-primary);
 	}
 
 	.desert-visual {
@@ -371,17 +395,55 @@ const faqs = [
 		min-height: 21rem;
 		border: var(--border);
 		border-radius: var(--radius-lg);
-		background: linear-gradient(160deg, #efe1cc 0%, #d5d8c6 52%, #a5ad96 100%);
+		background: var(--color-primary-soft);
 		box-shadow: var(--shadow-lg);
 	}
 
-	.desert-visual::before {
+	.desert-visual--hero {
+		border-color: transparent;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.desert-visual--hero::before,
+	.desert-visual--hero::after {
 		position: absolute;
-		inset: 0;
-		z-index: -3;
-		background-image: linear-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1px);
-		background-size: 100% 3rem;
+		inset-block: 0;
+		right: 0;
 		content: '';
+		pointer-events: none;
+	}
+
+	.desert-visual--hero::before {
+		left: 0;
+		background-image: radial-gradient(
+			circle,
+			var(--brand-blue-bright) 1.25px,
+			transparent 1.6px
+		);
+		background-size: 14px 14px;
+		mask-image: linear-gradient(90deg, transparent 0%, transparent 8%, black 100%);
+		-webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 8%, black 100%);
+		opacity: 0.68;
+	}
+
+	.desert-visual--hero::after {
+		left: 48%;
+		background-image: radial-gradient(
+			circle,
+			var(--brand-blue-bright) 1.5px,
+			transparent 1.8px
+		);
+		background-size: 8px 8px;
+		mask-image: linear-gradient(90deg, transparent 0%, black 85%);
+		-webkit-mask-image: linear-gradient(90deg, transparent 0%, black 85%);
+		opacity: 0.9;
+	}
+
+	.desert-visual--hero .sun,
+	.desert-visual--hero .mesa,
+	.desert-visual--hero > p {
+		display: none;
 	}
 
 	.desert-visual p {
@@ -410,8 +472,8 @@ const faqs = [
 		width: 5.5rem;
 		aspect-ratio: 1;
 		border-radius: 50%;
-		background: color-mix(in srgb, var(--color-accent) 75%, white);
-		box-shadow: 0 0 0 1rem rgb(255 255 255 / 0.1);
+		background: var(--color-accent);
+		box-shadow: 0 0 0 1rem var(--color-on-primary-subtle);
 	}
 
 	.mesa {
@@ -424,8 +486,8 @@ const faqs = [
 
 	.mesa--back {
 		height: 65%;
-		background: color-mix(in srgb, var(--color-accent) 67%, #c7aa86);
-		opacity: 0.65;
+		background: var(--color-accent);
+		opacity: 0.55;
 	}
 
 	.mesa--front {
@@ -744,6 +806,33 @@ const faqs = [
 		.services-grid,
 		.areas-grid {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 63.99rem) {
+		.desert-visual--hero::before {
+			background-size: 16px 16px;
+			opacity: 0.48;
+		}
+
+		.desert-visual--hero::after {
+			left: 58%;
+			background-size: 10px 10px;
+			opacity: 0.62;
+		}
+	}
+
+	@media (max-width: 33.99rem) {
+		.desert-visual--hero::before {
+			left: 35%;
+			background-size: 18px 18px;
+			opacity: 0.26;
+		}
+
+		.desert-visual--hero::after {
+			left: 72%;
+			background-size: 12px 12px;
+			opacity: 0.36;
 		}
 	}
 

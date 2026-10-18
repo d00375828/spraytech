@@ -46,6 +46,13 @@ const description =
 						<span class="contact-action">Text Spraytech <span aria-hidden="true">→</span></span>
 					</a>
 
+					<a class="contact-card" href={site.email.href}>
+						<span class="contact-icon" aria-hidden="true">@</span>
+						<span class="contact-label">Email</span>
+						<strong>{site.email.display}</strong>
+						<span class="contact-action">Email Spraytech <span aria-hidden="true">→</span></span>
+					</a>
+
 					<div class="contact-card contact-card--hours">
 						<span class="contact-icon" aria-hidden="true">◷</span>
 						<span class="contact-label">Hours</span>
@@ -227,6 +234,7 @@ const description =
 	.contact-card strong {
 		color: var(--color-primary);
 		font-size: 1.25rem;
+		overflow-wrap: anywhere;
 	}
 
 	.contact-action {
@@ -384,7 +392,10 @@ const description =
 	}
 
 	@media (min-width: 40rem) {
-		.contact-grid,
+		.contact-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
 		.trust-grid {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
@@ -399,6 +410,10 @@ const description =
 	}
 
 	@media (min-width: 64rem) {
+		.contact-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
 		.form-layout {
 			grid-template-columns: minmax(18rem, 0.65fr) minmax(0, 1fr);
 			gap: var(--space-9);

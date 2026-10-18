@@ -65,7 +65,7 @@ const trustItems = [
 					<div class="photo-mark" aria-hidden="true">
 						<span></span>
 					</div>
-					<p>Cute Pic of Tyson??<br /><span>Still need to put a pic here</span></p>
+					<p>{site.owner.name} / Owner Photo<br /><span>Local image coming soon</span></p>
 				</div>
 			</div>
 		</section>
@@ -216,9 +216,7 @@ const trustItems = [
 		place-items: center;
 		border: var(--border);
 		border-radius: var(--radius-lg);
-		background:
-			linear-gradient(145deg, rgb(255 255 255 / 0.05), transparent 50%),
-			var(--color-primary);
+		background: var(--color-primary);
 		box-shadow: var(--shadow-lg);
 	}
 
@@ -229,7 +227,7 @@ const trustItems = [
 		bottom: -35%;
 		width: 85%;
 		aspect-ratio: 1;
-		border: 1px solid rgb(255 255 255 / 0.12);
+		border: 1px solid var(--color-border-on-primary);
 		border-radius: 50%;
 		content: '';
 	}
@@ -238,7 +236,7 @@ const trustItems = [
 		position: relative;
 		width: 7rem;
 		height: 8rem;
-		border: 2px solid rgb(255 255 255 / 0.3);
+		border: 2px solid var(--color-border-on-primary);
 		border-radius: 3.5rem 3.5rem var(--radius-md) var(--radius-md);
 	}
 

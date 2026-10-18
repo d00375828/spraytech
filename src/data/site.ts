@@ -1,6 +1,9 @@
 export const site = {
 	name: 'Spraytech Pest and Weed Control',
 	shortName: 'Spraytech',
+	owner: {
+		name: 'Tyson Fisher',
+	},
 	description:
 		'Local pest and weed control services for homes and businesses in St. George and surrounding Southern Utah communities.',
 	primaryLocation: {
@@ -12,6 +15,10 @@ export const site = {
 		display: '(435) 705-3696',
 		href: 'tel:+14357053696',
 		smsHref: 'sms:+14357053696',
+	},
+	email: {
+		display: 'spraytechpest@gmail.com',
+		href: 'mailto:spraytechpest@gmail.com',
 	},
 	hours: {
 		display: 'Monday-Saturday, 7 AM-7 PM',

@@ -19,8 +19,11 @@ const areasActive = currentPath.startsWith('/service-areas/');
 <header class="site-header">
 	<div class="container header-inner">
 		<a class="brand" href="/" aria-label={`${site.name} home`}>
-			<span class="brand-icon" aria-hidden="true">🐞</span>
-			<span>{site.name}</span>
+			<span class="brand-icon" aria-hidden="true">ST</span>
+			<span class="brand-copy">
+				<span class="brand-name">{site.shortName}</span>
+				<span class="brand-tagline">Pest and Weed Control</span>
+			</span>
 		</a>
 
 		<nav class="desktop-nav" aria-label="Primary navigation">
@@ -195,9 +198,31 @@ const areasActive = currentPath.startsWith('/service-areas/');
 		height: 2.5rem;
 		flex: 0 0 auto;
 		place-items: center;
-		border-radius: 50%;
-		background: var(--color-background);
-		font-size: 1.25rem;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+		font-size: 0.75rem;
+		font-weight: 800;
+		letter-spacing: 0.04em;
+	}
+
+	.brand-copy {
+		display: grid;
+		gap: 0.05rem;
+	}
+
+	.brand-name {
+		font-size: 1rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.brand-tagline {
+		color: var(--color-text-muted);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.01em;
 	}
 
 	.desktop-nav,

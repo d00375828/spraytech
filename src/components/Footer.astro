@@ -10,8 +10,11 @@ const year = new Date().getFullYear();
 	<div class="container footer-grid">
 		<div class="footer-brand">
 			<a class="brand" href="/" aria-label={`${site.name} home`}>
-				<span class="brand-icon" aria-hidden="true">🐞</span>
-				<span>{site.name}</span>
+				<span class="brand-icon" aria-hidden="true">ST</span>
+				<span class="brand-copy">
+					<span class="brand-name">{site.shortName}</span>
+					<span class="brand-tagline">Pest and Weed Control</span>
+				</span>
 			</a>
 			<p>Local pest and weed control for {site.primaryLocation.region}.</p>
 			{site.licensedAndInsured && <p class="credential">Licensed &amp; insured</p>}
@@ -44,7 +47,7 @@ const year = new Date().getFullYear();
 			<address>
 				<a href={site.phone.href}>{site.phone.display}</a>
 				<span>{site.hours.display}</span>
-				<span>Email coming soon</span>
+				<a href={site.email.href}>{site.email.display}</a>
 			</address>
 		</div>
 	</div>
@@ -57,8 +60,8 @@ const year = new Date().getFullYear();
 <style>
 	.site-footer {
 		padding-top: var(--space-8);
-		background: var(--color-text);
-		color: rgb(255 255 255 / 0.78);
+		background: var(--color-primary);
+		color: var(--color-on-primary-muted);
 	}
 
 	.footer-grid {
@@ -73,7 +76,7 @@ const year = new Date().getFullYear();
 		gap: var(--space-3);
 		max-width: 18rem;
 		margin-bottom: var(--space-4);
-		color: var(--color-surface);
+		color: var(--color-on-primary);
 		font-weight: 800;
 		line-height: 1.2;
 		text-decoration: none;
@@ -85,8 +88,29 @@ const year = new Date().getFullYear();
 		height: 2.5rem;
 		flex: 0 0 auto;
 		place-items: center;
-		border-radius: 50%;
-		background: rgb(255 255 255 / 0.08);
+		border: 1px solid var(--color-border-on-primary);
+		border-radius: var(--radius-sm);
+		background: var(--color-on-primary-subtle);
+		color: var(--color-accent);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+	}
+
+	.brand-copy {
+		display: grid;
+		gap: 0.05rem;
+	}
+
+	.brand-name {
+		font-size: 1rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.brand-tagline {
+		color: var(--color-on-primary-muted);
+		font-size: 0.68rem;
+		letter-spacing: 0.01em;
 	}
 
 	.footer-brand p {
@@ -94,13 +118,13 @@ const year = new Date().getFullYear();
 	}
 
 	.credential {
-		color: var(--color-surface);
+		color: var(--color-on-primary);
 		font-weight: 700;
 	}
 
 	h2 {
 		margin-bottom: var(--space-4);
-		color: var(--color-surface);
+		color: var(--color-on-primary);
 		font-size: 1rem;
 	}
 
@@ -125,7 +149,7 @@ const year = new Date().getFullYear();
 
 	.footer-bottom {
 		padding-block: var(--space-4);
-		border-top: 1px solid rgb(255 255 255 / 0.14);
+		border-top: 1px solid var(--color-border-on-primary);
 		font-size: 0.875rem;
 	}
 
